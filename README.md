@@ -5,17 +5,15 @@ NaikPete' adalah aplikasi berbasis teknologi untuk memudahkan pengguna dalam mel
 ## 🎯 Tujuan Proyek
 Tujuan utama dari **NaikPete'** adalah untuk menciptakan sebuah aplikasi yang meningkatkan pengalaman pengguna dalam menggunakan transportasi umum. Beberapa tujuan spesifiknya antara lain:
 
-- **Mempermudah Pemesanan Kursi**: Aplikasi memungkinkan pengguna untuk memilih dan memesan kursi yang tersedia di kendaraan, memberikan kenyamanan dan kepastian tempat duduk sebelum memulai perjalanan. 🎫
+- **Mempermudah Pemesanan Kursi**: Aplikasi dapat mempermudah pengguna untuk mendapatkan kursi kosong dengan adanya notifikasi langsung dari aplikasi. 🎫
 - **Menyediakan Pilihan Rute Terdekat**: Pengguna dapat memilih rute yang paling efisien dari lokasi tertentu menuju tujuan yang diinginkan, membantu mereka merencanakan perjalanan dengan lebih mudah. 🗺️
-- **Mengecek Kapasitas Kursi**: Pengguna dapat melihat kapasitas kursi yang tersedia pada kendaraan, sehingga mereka bisa merencanakan perjalanan tanpa kebingungan. 🚶‍♂️
 - **Menampilkan Lokasi Halte Terdekat**: Aplikasi ini membantu pengguna untuk menemukan halte terdekat dari posisi mereka, memastikan perjalanan yang lebih efisien dan nyaman. 🛑
 - **Meningkatkan Pengalaman Pengguna dalam Menggunakan Transportasi Umum**: NaikPete' dirancang untuk mengoptimalkan perjalanan dengan memberikan kemudahan akses, informasi rute, dan pemesanan kursi. 🏙️
 - **Meningkatkan Efisiensi dan Pengelolaan Transportasi**: Aplikasi ini juga dapat membantu pihak penyedia transportasi dalam mengelola kapasitas kendaraan dan mengurangi ketidakpastian mengenai ketersediaan tempat duduk. 📊
 
 ## 🛠️ Fitur Utama
-- **Pemesanan Kursi**: Pengguna dapat memilih dan memesan kursi yang tersedia dalam kendaraan. 🎫
+- **Notifikasi Ketersediaan Kursi**: Pengguna dapat dengan mudah mendapatkan kursi dengan notifikasi. 🎫
 - **Pemilihan Rute Terdekat**: Menyediakan pilihan rute dari lokasi tertentu ke tujuan yang diinginkan. 🗺️
-- **Cek Kapasitas Kursi**: Pengguna dapat melihat kapasitas kursi yang tersedia pada kendaraan. 🚶‍♂️
 - **Lokasi Halte**: Melihat lokasi halte terdekat dengan pengguna. 🛑
 
 ## 💻 Teknologi yang Digunakan
