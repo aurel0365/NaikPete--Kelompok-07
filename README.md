@@ -16,6 +16,11 @@ Tujuan utama dari **NaikPete'** adalah untuk menciptakan sebuah aplikasi yang me
 - **Pemilihan Rute Terdekat**: Menyediakan pilihan rute dari lokasi tertentu ke tujuan yang diinginkan. 🗺️
 - **Lokasi Halte**: Melihat lokasi halte terdekat dengan pengguna. 🛑
 
+# Our Features
+## POV User
+
+## POV Driver
+
 ## 💻 Teknologi yang Digunakan
 - **Frontend**: Flutter (untuk aplikasi mobile dan web) 📱
 - **Backend**: (Jika ada, sebutkan teknologi backend) 🖥️
@@ -25,5 +30,15 @@ Tujuan utama dari **NaikPete'** adalah untuk menciptakan sebuah aplikasi yang me
 Sebelum menjalankan aplikasi ini, pastikan Anda sudah menginstal beberapa alat berikut:
 - [Flutter](https://flutter.dev/docs/get-started/install) 🚀
 - [Android Studio](https://developer.android.com/studio) atau IDE lain yang mendukung Flutter 🖥️
+- [Laravel] (https://laravel.com/docs/11.x/installation)🔥
+
+### Project Status
+Saat ini, proyek NaikPete' kami sedang dalam tahap pengembangan aktif. Tim kami bekerja keras untuk mengimplementasikan fitur-fitur utama dan meningkatkan fungsionalitas keseluruhan. Fokus utama saat ini adalah membangun komponen inti dari aplikasi, agar fitur-fitur yang sudah kami rancang dapat digunakan dengan mudah oleh user dan driver sesuai peran masing-masing sehingga tujuan pembuatan Aplikasi ini dapat tercapai.
+   
+## 📝 Contributors
+- Aurelia Davine Putri Nata
+- Excel Marcello Parinussa
+- Michael Christianto Sawitto
+- Muhammad Aditya Ridwan
 
 
