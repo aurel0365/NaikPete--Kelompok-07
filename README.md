@@ -18,7 +18,6 @@ Tujuan utama dari **NaikPete'** adalah untuk menciptakan sebuah aplikasi yang me
 
 # Our Features
 ## POV User
-
 ## POV Driver
 
 ## 💻 Teknologi yang Digunakan
