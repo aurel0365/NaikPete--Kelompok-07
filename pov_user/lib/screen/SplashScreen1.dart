@@ -1,6 +1,7 @@
-import 'package:alp_naikpete/screen/SplashScreen2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'SplashScreen2';
 
 class SplashScreen1 extends StatelessWidget {
   const SplashScreen1({Key? key}) : super(key: key);
