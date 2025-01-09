@@ -9,17 +9,15 @@ class TicketScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 4,
-        backgroundColor: Colors.white,
-        centerTitle: true,
+        backgroundColor: Colors.white, // Warna putih untuk latar belakang AppBar
+        foregroundColor: Colors.black, // Warna hitam untuk teks dan ikon
+        elevation: 0,
+        automaticallyImplyLeading: false, // Menghapus ikon back
         title: const Text(
-          'Tiket One Day',
-          style: TextStyle(
-            color: Color(0xFF42C8DC),
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          ' ',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
+        centerTitle: true,
       ),
       body: Container(
         color: Colors.white,

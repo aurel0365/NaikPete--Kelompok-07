@@ -7,15 +7,23 @@ class Jadwalberangkat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2, // Jumlah tab (Semua Jadwal & Terdekat)
+      length: 2, 
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white, // Warna putih untuk latar belakang AppBar
-          foregroundColor: Colors.black, // Warna hitam untuk teks dan ikon
+          backgroundColor: Colors.white, 
+          foregroundColor: Colors.black,
           elevation: 0,
-          title: const Text(
-            'Jadwal Berangkat',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          automaticallyImplyLeading: false, 
+          toolbarHeight: 100, 
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 30), 
+              const Text(
+                'Jadwal Berangkat',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
           centerTitle: true,
           bottom: const TabBar(
