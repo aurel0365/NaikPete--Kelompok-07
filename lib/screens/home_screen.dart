@@ -80,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           image: const DecorationImage(
-                            image: AssetImage('assets/bus_promo.jpg'), // Sesuaikan path gambar
+                            image: AssetImage('lib/assets/pete-pete.jpg'), // Sesuaikan path gambar
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -123,9 +123,10 @@ class HomeScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _MenuItem(
+                FeatureCard(
                   icon: Icons.directions_bus,
                   label: 'Pete-pete',
+                  width: MediaQuery.of(context).size.width / 4, // Define cardWidth dynamically
                   onTap: () {
                     print('Pete-pete ditekan');
                   },
@@ -135,7 +136,7 @@ class HomeScreen extends StatelessWidget {
                   label: 'Jadwal',
                   onTap: () {
                     // Navigasi ke ScheduleScreen tanpa mengganti layar sebelumnya
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => TrayekListScreen()),
                     );
@@ -149,7 +150,7 @@ class HomeScreen extends StatelessWidget {
                   },
                 ),
                 _MenuItem(
-                  icon: Icons.stop_circle_outlined,
+                  icon: Icons.home,
                   label: 'Halte',
                   onTap: () {
                     print('Halte ditekan');
@@ -158,55 +159,6 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-
-            // Another Image Section
-            Expanded(
-              child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        print('Gambar bagian bawah ditekan');
-                      },
-                      child: Container(
-                        height: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: const DecorationImage(
-                            image: AssetImage('assets/bus_promo.jpg'), // Sesuaikan path gambar
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.5),
-                              borderRadius: const BorderRadius.only(
-                                bottomLeft: Radius.circular(10),
-                                bottomRight: Radius.circular(10),
-                              ),
-                            ),
-                            child: const Text(
-                              'DAPATKAN ONE DAY TICKET ANDA\n10.000 IDR',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
           ],
         ),
       ),
@@ -273,6 +225,58 @@ class _MenuItem extends StatelessWidget {
             label,
             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FeatureCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final double width;
+  final VoidCallback onTap;
+
+  const FeatureCard({
+    required this.icon,
+    required this.label,
+    required this.width,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width, // Lebar card berdasarkan ukuran layar
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 48.0,
+            color: Colors.cyan,
+          ),
+          SizedBox(height: 8.0),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 14.0,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),

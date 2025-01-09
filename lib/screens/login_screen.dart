@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pete/screens/forgotpassword.dart';
 import 'package:flutter_pete/screens/home_screen.dart';
 import '../widgets/custom_textfield.dart';
 import 'register_screen.dart';
@@ -79,7 +80,10 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 10),
             GestureDetector(
               onTap: () {
-                // TODO: Tambahkan navigasi ke halaman lupa kata sandi
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),
+                );
               },
               child: const Text('Lupa kata sandi?', style: TextStyle(color: Colors.cyan)),
             ),

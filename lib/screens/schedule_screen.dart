@@ -2,28 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pete/screens/schedulemaps_screen.dart';
 import 'package:latlong2/latlong.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: TrayekListScreen(),
-    );
-  }
-}
-
 class TrayekListScreen extends StatelessWidget {
   final List<Map<String, dynamic>> trayekList = [
     {
-      'time': '07.30',
       'name': 'Trayek A',
       'Go': 'BTN Minasa Upa – Syech Yusuf – Sultan Alauddin – Andi Tonro – Kumala – Ratulangi – Jendral Sudirman (Karebosi Timur) – HOS Cokroaminoto (Sentral) – KH. Wahid Hasyim – Wahidin Sudirohusodo – Pasar Butung',
       'Back': 'Pasar Butung – Sulawesi – Riburane Achmad Yani (Balaikota) – Jendral Sudirman – Ratulangi (MaRI) – Landak – Veteran – Sultan Alauddin – Syech Yusuf – BTN Minasa Upa',
-      'location': LatLng(-5.147665, 119.432731),
+      'page': MapScreen(trayek: {},),
     },
     {
       'time': '08.30',
@@ -127,7 +112,7 @@ class TrayekListScreen extends StatelessWidget {
       'time': '22.30',
       'name': 'Trayek P',
       'Go': 'Terminal Panaikang – Urip Sumoharjo – AP. Pettarani – Landak Baru – Veteran – DR. Sam Ratulangi – Mappaoddang – Daeng Ngeppe – Daeng Tata – Mallengkeri – Terminal Tamalate',
-      'Back': ' Terminal Tamalate – Mallengkeri – Daeng Tata – Daeng Ngeppe – Kumala – DR. Sam Ratulangi – Landak – Landak Baru – AP. Pettarani – Urip Sumoharjo – TerminalPanaikang',
+      'Back': 'Terminal Tamalate – Mallengkeri – Daeng Tata – Daeng Ngeppe – Kumala – DR. Sam Ratulangi – Landak – Landak Baru – AP. Pettarani – Urip Sumoharjo – TerminalPanaikang',
       'location': LatLng(-5.135825, 119.429993),
     },
     {
@@ -195,36 +180,46 @@ class TrayekListScreen extends StatelessWidget {
     },
     {
       'time': '08.30',
-      'name': 'Trayek F1', 
+      'name': 'Trayek F1',
       'Go': 'Terminal Tamalate – Mallengkeri – Daeng Tata – M. Tahir – Kumala – Veteran – Masjid Raya – Urip Sumoharjo – Perintis Kemerdekaan – Kampus Unhas',
       'Back': 'Kampus Unhas – Perintis Kemerdekaan – Urip Sumoharjo – AP. Pettarani – Abubakar Lambogo – Veteran – Sultan Alauddin – Andi Tonro – Kumala – M.Tahir – DaengTata – Mallengkeri – Terminal Tamalate',
       'location': LatLng(-5.135825, 119.429993),
     }
   ];
 
-  void navigateToMap(BuildContext context, Map<String, dynamic> trayek) {
+  void navigateToMap(BuildContext context, Widget page) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => MapScreen(
-        ),
-      ),
+      MaterialPageRoute(builder: (context) => page),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Jadwal dan Trayek'),
+        title: const Text(
+          'Jadwal dan Trayek',
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.blue,
+        centerTitle: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: ListView.builder(
         itemCount: trayekList.length,
         itemBuilder: (context, index) {
           final trayek = trayekList[index];
           return GestureDetector(
-            onTap: () => navigateToMap(context, trayek),
+            onTap: () => navigateToMap(context, trayek['page']),
             child: Card(
               margin: EdgeInsets.all(8.0),
               shape: RoundedRectangleBorder(
@@ -237,41 +232,46 @@ class TrayekListScreen extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.directions_bus,
-                      size: 40,
+                      size: size.width * 0.1, // Ukuran icon responsif
                       color: Colors.blue,
                     ),
-                    SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          trayek['time'],
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                    SizedBox(
+                        width:
+                            size.width * 0.04), // Padding horizontal responsif
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            trayek['name'],
+                            style: TextStyle(fontSize: size.width * 0.04),
                           ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          trayek['name'],
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          '1.5 km halte terdekat dari lokasimu',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          trayek['Go'],
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          trayek['Back'],
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
+                          SizedBox(height: size.height * 0.005),
+                          Text(
+                            'Rute berangkat:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: size.height * 0.005),
+                          Text(
+                            trayek['Go'],
+                            style: TextStyle(fontSize: size.width * 0.020),
+                            maxLines: 5,
+                            overflow: TextOverflow.ellipsis, // Potong teks yang terlalu panjang
+                          ),
+                          SizedBox(height: size.height * 0.005),
+                          Text(
+                            'Rute balik:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: size.height * 0.005),
+                          Text(
+                            trayek['Back'],
+                            style: TextStyle(fontSize: size.width * 0.020),
+                            maxLines: 5,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
