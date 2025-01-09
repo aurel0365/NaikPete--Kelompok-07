@@ -63,6 +63,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/Tiket.png
+    - assets/images/AppLogo.png
 
   # Mengaktifkan ikon material
   uses-material-design: true
