@@ -8,7 +8,19 @@ class TrayekListScreen extends StatelessWidget {
       'name': 'Trayek A',
       'Go': 'BTN Minasa Upa – Syech Yusuf – Sultan Alauddin – Andi Tonro – Kumala – Ratulangi – Jendral Sudirman (Karebosi Timur) – HOS Cokroaminoto (Sentral) – KH. Wahid Hasyim – Wahidin Sudirohusodo – Pasar Butung',
       'Back': 'Pasar Butung – Sulawesi – Riburane Achmad Yani (Balaikota) – Jendral Sudirman – Ratulangi (MaRI) – Landak – Veteran – Sultan Alauddin – Syech Yusuf – BTN Minasa Upa',
-      'page': MapScreen(trayek: {},),
+      'locations': [
+        LatLng(-5.1862518741076, 119.4549252153959), // Lokasi A
+        LatLng(-5.189225844106793, 119.44795864917056), // Lokasi B
+        LatLng(-5.1746123048921335, 119.43298482917724), // Lokasi C
+        LatLng(-5.172427182002852, 119.42201452341928), // Lokasi D
+        LatLng(-5.178739738645198, 119.41969856998148), // Lokasi E
+        LatLng(-5.164657795101395, 119.4172607242575), // Lokasi F
+        LatLng(-5.133093353032515, 119.41216306861821), // Lokasi G
+        LatLng(-5.1309012556305555, 119.41381375888604), // Lokasi H
+        LatLng(-5.1281611232884945, 119.41359366685033), // Lokasi I
+        LatLng(-5.134568360110945, 119.4956636125877), // Lokasi J
+        LatLng(-5.123353640137265, 119.41222685030239), // Lokasi K
+      ],
     },
     {
       'time': '08.30',
@@ -187,13 +199,6 @@ class TrayekListScreen extends StatelessWidget {
     }
   ];
 
-  void navigateToMap(BuildContext context, Widget page) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -219,7 +224,20 @@ class TrayekListScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           final trayek = trayekList[index];
           return GestureDetector(
-            onTap: () => navigateToMap(context, trayek['page']),
+            onTap: () {
+              // Navigasi ke MapScreen dengan mengirim data trayek
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MapScreen(
+                    trayekName: trayek['name'],
+                    goRoute: trayek['Go'],
+                    backRoute: trayek['Back'],
+                    locations: trayek['locations'],
+                  ),
+                ),
+              );
+            },
             child: Card(
               margin: EdgeInsets.all(8.0),
               shape: RoundedRectangleBorder(
@@ -235,9 +253,7 @@ class TrayekListScreen extends StatelessWidget {
                       size: size.width * 0.1, // Ukuran icon responsif
                       color: Colors.blue,
                     ),
-                    SizedBox(
-                        width:
-                            size.width * 0.04), // Padding horizontal responsif
+                    SizedBox(width: size.width * 0.04), // Padding horizontal
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +272,7 @@ class TrayekListScreen extends StatelessWidget {
                             trayek['Go'],
                             style: TextStyle(fontSize: size.width * 0.020),
                             maxLines: 5,
-                            overflow: TextOverflow.ellipsis, // Potong teks yang terlalu panjang
+                            overflow: TextOverflow.ellipsis,
                           ),
                           SizedBox(height: size.height * 0.005),
                           Text(

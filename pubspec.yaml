@@ -36,6 +36,7 @@ dependencies:
   flutter_map_directions: ^0.0.3
   graphhooper_route_navigation: 0.0.3
   mapbox_gl: ^0.16.0
+  polyline_codec: ^0.1.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
