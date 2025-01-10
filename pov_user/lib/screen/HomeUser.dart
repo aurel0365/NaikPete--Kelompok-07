@@ -164,10 +164,8 @@ class HomeScreenBody extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 _buildFeatureCard(Icons.directions_bus, "Pete-pete", context, Pencarianpete()),
-                _buildFeatureCard(Icons.confirmation_num, "Tiket One-Day", context, TicketScreen()),
                 _buildFeatureCard(Icons.route, "Rute", context, TicketScreen()),
                 _buildFeatureCard(Icons.location_on, "Halte", context, TicketScreen()),
-                _buildFeatureCard(Icons.schedule, "Jadwal", context, Jadwalberangkat()),
               ],
             ),
           ],
