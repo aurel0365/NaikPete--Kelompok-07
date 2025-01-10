@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_pete/screens/Drivescreen.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:polyline_codec/polyline_codec.dart'; // Untuk decode polyline
@@ -79,58 +80,67 @@ class _RouteMapPageState extends State<MapScreen> {
   }
 
   void _showStartJourneyDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Mulai Perjalanan"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Anda akan memulai perjalanan untuk narik di sepanjang trayek berikut:",
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(height: 10),
-              Text(
-                widget.trayekName,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "Rute berangkat: ${widget.goRoute}",
-                style: TextStyle(fontSize: 14),
-              ),
-              SizedBox(height: 10),
-              Text(
-                "ANDA TIDAK DAPAT MENGUBAH STATUS SELAMA MEMBAWA PENUMPANG",
-                style: TextStyle(fontSize: 14, color: Colors.red),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Tutup dialog
-                setState(() {
-                  isJourneyStarted = true; // Mulai perjalanan
-                  passengerCount = 0; // Reset jumlah penumpang
-                });
-              },
-              child: Text("OK"),
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Mulai Perjalanan"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Anda akan memulai perjalanan untuk narik di sepanjang trayek berikut:",
+              style: TextStyle(fontSize: 16),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Tutup dialog tanpa memulai perjalanan
-              },
-              child: Text("Batal"),
+            SizedBox(height: 10),
+            Text(
+              widget.trayekName,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            SizedBox(height: 10),
+            Text(
+              "Rute berangkat: ${widget.goRoute}",
+              style: TextStyle(fontSize: 14),
+            ),
+            SizedBox(height: 10),
+            Text(
+              "ANDA TIDAK DAPAT MENGUBAH STATUS SELAMA MEMBAWA PENUMPANG",
+              style: TextStyle(fontSize: 14, color: Colors.red),
             ),
           ],
-        );
-      },
-    );
-  }
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Tutup dialog
+              // Navigasi ke DriverScreen dengan membawa data trayek, rute, dan jumlah penumpang
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DriverScreen(
+                    trayekName: widget.trayekName,
+                    goRoute: widget.goRoute,
+                    backRoute: widget.backRoute,
+                    routePoints: routePoints, // Kirim rute points
+                    passengerCount: 5, // Contoh: Jumlah penumpang awal (bisa disesuaikan)
+                  ),
+                ),
+              );
+            },
+            child: Text("OK"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Tutup dialog tanpa memulai perjalanan
+            },
+            child: Text("Batal"),
+          ),
+        ],
+      );
+    },
+  );
+}
 
   Widget _buildPassengerOverlay() {
     Color overlayColor;
