@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../widget/BottomNavBar.dart';
 import 'JadwalBerangkat.dart';
+import 'Notification.dart';
 import 'PencarianPete.dart';
+import 'ProfileUser.dart';
+import 'Tiket.dart';
 
 class HomeScreens extends StatefulWidget {
   const HomeScreens({super.key});
@@ -21,8 +24,9 @@ class _HomeScreenState extends State<HomeScreens> {
 
   final List<Widget> _screens = [
     HomeScreenBody(),
-    Pencarianpete(),
     Jadwalberangkat(),
+    TicketScreen(),
+    AccountUser(),
   ];
 
   @override
@@ -69,7 +73,6 @@ class HomeScreenBody extends StatelessWidget {
             _buildServiceGrid(context),
             const SizedBox(height: 30),
             _buildInfoSection(),
-            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -134,7 +137,10 @@ class HomeScreenBody extends StatelessWidget {
                 size: 28,
               ),
               onPressed: () {
-                // Navigation to notifications can be added later if needed
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotificationScreen()),
+                );
               },
             ),
           ],
@@ -183,14 +189,14 @@ class HomeScreenBody extends StatelessWidget {
 
   Widget _buildServiceGrid(BuildContext context) {
     return GridView.count(
-      crossAxisCount: 2,
+      crossAxisCount: 3,
       crossAxisSpacing: 16,
       mainAxisSpacing: 16,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: [
         _buildFeatureCard(Icons.directions_bus, "Pete-pete", context, Pencarianpete()),
-        _buildFeatureCard(Icons.route, "Rute", context, Jadwalberangkat()),
+        _buildFeatureCard(Icons.location_on, "Halte", context, TicketScreen()),
       ],
     );
   }
@@ -242,7 +248,7 @@ class HomeScreenBody extends StatelessWidget {
           ),
           SizedBox(height: 8),
           Text(
-            "Selamat datang ke aplikasi NaikPete!! Pastikan selalu mengikuti update untuk fitur-fitur baru yang akan datang.",
+            "Cek jadwal keberangkatan pete-pete dan layanan lainnya langsung melalui aplikasi kami. Selalu update untuk fitur terbaru!",
             style: TextStyle(fontSize: 14, color: Colors.black54),
           ),
         ],
