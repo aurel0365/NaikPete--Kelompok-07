@@ -6,181 +6,216 @@ class PaymentMethodScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF5F5FA),
       appBar: AppBar(
-        title: const Text('Metode Pembayaran'),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: _buildCustomBackButton(context),
         centerTitle: true,
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
+        title: const Padding(
+          padding: EdgeInsets.only(top: 10.0), // Memberikan jarak di atas ikon dan judul
+          child: Text(
+            'Metode Pembayaran',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        toolbarHeight: 70, // Menambahkan tinggi toolbar untuk memberikan ruang lebih
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 30), // Menambahkan jarak di atas elemen pertama
+            _buildPaymentOption(title: 'OVO'),
+            const SizedBox(height: 10),
+            _buildPaymentOption(title: 'Kartu Debit'),
+            const SizedBox(height: 10),
+            _buildCreditCardOptions(),
+            const SizedBox(height: 10),
+            _buildAddNewCardButton(),
             const SizedBox(height: 20),
-            _buildPaymentOption(
-              title: 'Ovo payment',
-              description: '081********',
-              icon: Icons.account_balance_wallet,
-              isSelected: false,
-            ),
-            const SizedBox(height: 10),
-            _buildPaymentOption(
-              title: 'Cash',
-              description: 'Silahkan dibayar langsung ke sopir',
-              icon: Icons.attach_money,
-              isSelected: false,
-            ),
-            const SizedBox(height: 10),
-            _buildBankOption(context),
             const Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Biaya:',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text(
-                  'Rp7.000',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20.0), // Mengangkat tombol Bayar ke atas
+              child: _buildCheckoutButton(),
             ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF00BCD4),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                ),
-                child: const Text(
-                  'Bayar',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildPaymentOption({
-    required String title,
-    required String description,
-    required IconData icon,
-    required bool isSelected,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: isSelected ? const Color(0xFF00BCD4) : Colors.grey.shade300,
-          width: 1.5,
+  // Custom Back Button
+  Widget _buildCustomBackButton(BuildContext context) {
+    return Positioned(
+      top: 16,
+      left: 16,
+      child: Container(
+        margin: const EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(51, 83, 232, 255), // Latar belakang soft blue
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: ListTile(
-        leading: Icon(
-          icon,
-          color: isSelected ? const Color(0xFF00BCD4) : Colors.grey,
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        subtitle: Text(
-          description,
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.grey,
-          ),
-        ),
-        trailing: Radio(
-          value: isSelected,
-          groupValue: true,
-          onChanged: (value) {},
+        child: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF42C8DC)), // Ikon biru
+          onPressed: () {
+            Navigator.pop(context); // Kembali ke layar sebelumnya
+          },
         ),
       ),
     );
   }
 
-  Widget _buildBankOption(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (context) => ListView(
-            children: const [
-              ListTile(title: Text('Bank BCA')),
-              ListTile(title: Text('Bank Mandiri')),
-              ListTile(title: Text('Bank BNI')),
-              ListTile(title: Text('Bank BRI')),
-            ],
+  Widget _buildPaymentOption({required String title}) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey.shade300,
-            width: 1.5,
-          ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: ListTile(
-          leading: Icon(
-            Icons.account_balance,
-            color: Colors.grey,
-          ),
-          title: const Text(
-            'Bank',
+          const Icon(Icons.chevron_right, color: Colors.grey),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCreditCardOptions() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Kartu Kredit',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
+              color: Colors.black,
             ),
           ),
-          subtitle: const Text(
-            'Silahkan memilih jenis bank',
+          const SizedBox(height: 10),
+          _buildCreditCardRow('Axis Bank', '**** 4536', Icons.credit_card),
+          const SizedBox(height: 10),
+          _buildCreditCardRow('HDFC Bank', '**** 5485', Icons.credit_card),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCreditCardRow(String bankName, String cardNumber, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF9F9FB),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: const Color(0xFF42C8DC)),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    bankName,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    cardNumber,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          Radio(
+            value: false,
+            groupValue: true,
+            onChanged: (value) {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAddNewCardButton() {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(Icons.add, color: Color(0xFF42C8DC)),
+          SizedBox(width: 10),
+          Text(
+            'Tambah Metode',
             style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF42C8DC),
             ),
           ),
-          trailing: const Icon(
-            Icons.chevron_right,
-            color: Colors.grey,
-          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCheckoutButton() {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF42C8DC),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        minimumSize: const Size(double.infinity, 50),
+      ),
+      child: const Text(
+        'Bayar',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
         ),
       ),
     );
