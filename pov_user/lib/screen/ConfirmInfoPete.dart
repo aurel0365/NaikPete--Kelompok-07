@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'MetodePembayaran.dart';
+
 class Confirmpete extends StatelessWidget {
   final List<String> ruteAlternatif = [
     "Rute Alternatif 1: Mall Panakkukang – Jalan Boulevard Panakkukang – Jalan AP Pettarani – Jalan Dr. Ratulangi – Jalan Haji Bau – Jalan Penghibur – Ciputra",
@@ -214,7 +216,13 @@ class Confirmpete extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Tambahkan navigasi jika diperlukan
+                        // Tambahkan aksi yang ingin dilakukan saat tombol ditekan
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PaymentMethodScreen(), // Ganti HalamanSelanjutnya dengan layar tujuan
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF42C8DC),

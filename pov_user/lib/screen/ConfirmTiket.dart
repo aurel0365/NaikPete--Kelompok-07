@@ -8,25 +8,25 @@ class ConfirmationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.white, // Ganti background menjadi putih
+        color: Colors.white,
         padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView( // Membuat konten scrollable
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: 30), // Menurunkan posisi konten dari atas
+              SizedBox(height: 40), // Menambah jarak atas
               // Header dengan ikon dan teks
               Padding(
-                padding: const EdgeInsets.only(bottom: 30.0),
+                padding: const EdgeInsets.only(bottom: 40.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.confirmation_num, color: Color(0xFF42C8DC), size: 30),
+                    Icon(Icons.confirmation_num, color: Color(0xFF42C8DC), size: 35),
                     SizedBox(width: 12),
                     Text(
                       'Rincian Pembelian',
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF42C8DC),
                       ),
@@ -35,53 +35,52 @@ class ConfirmationScreen extends StatelessWidget {
                 ),
               ),
               // Card container untuk rincian tiket
-              Card(
-                elevation: 10,
-                shadowColor: Colors.grey.withOpacity(0.3),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      _buildDetailRow('Jenis Tiket', 'One Day Pass'),
-                      _buildDetailRow('Jumlah Tiket', '1'),
-                      _buildDetailRow('Harga Per Tiket', 'IDR 7,000'),
-                      Divider(thickness: 1.5, color: Colors.grey.withOpacity(0.5)),
-                      _buildDetailRow(
-                        'Total Pembayaran', 
-                        'IDR 7,000', 
-                        isTotal: true
-                      ),
-                    ],
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Card(
+                  elevation: 8,
+                  shadowColor: Colors.grey.withOpacity(0.3),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _buildDetailRow('Jenis Tiket', 'One Day Pass'),
+                        _buildDetailRow('Jumlah Tiket', '1'),
+                        _buildDetailRow('Harga Per Tiket', 'IDR 7,000'),
+                        Divider(thickness: 1.5, color: Colors.grey.withOpacity(0.5)),
+                        _buildDetailRow(
+                          'Total Pembayaran', 
+                          'IDR 7,000', 
+                          isTotal: true
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 60), // Tambah jarak bawah
               // Tombol "Lanjut ke Pembayaran"
               ElevatedButton(
                 onPressed: () {
-                  // Arahkan ke halaman Pilihan Pembayaran
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => PaymentMethodScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF42C8DC), // Warna utama biru
-                  padding: EdgeInsets.symmetric(horizontal: 70, vertical: 18),
+                  backgroundColor: Color(0xFF42C8DC), 
+                  padding: EdgeInsets.symmetric(horizontal: 80, vertical: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                   shadowColor: Colors.grey.withOpacity(0.4),
-                  elevation: 8,
+                  elevation: 12,
                 ),
                 child: Text(
                   "Lanjut ke Pembayaran",
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -97,22 +96,22 @@ class ConfirmationScreen extends StatelessWidget {
   // Helper function untuk membuat row rincian tiket
   Widget _buildDetailRow(String title, String value, {bool isTotal = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
             title,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               color: Colors.black87,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
             ),
           ),
           Text(
             value,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
               color: isTotal ? Colors.green : Colors.black54,
             ),
