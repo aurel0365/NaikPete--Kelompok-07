@@ -6,15 +6,15 @@ class DriverScreen extends StatefulWidget {
   final String trayekName;
   final String goRoute;
   final String backRoute;
-  final List<LatLng> routePoints; // Tambahkan rute points
-  final int passengerCount; // Jumlah penumpang
+  final List<LatLng> routePoints;
+  final int passengerCount;
 
   const DriverScreen({
     required this.trayekName,
     required this.goRoute,
     required this.backRoute,
-    required this.routePoints, // Terima rute points
-    required this.passengerCount, // Terima jumlah penumpang
+    required this.routePoints,
+    required this.passengerCount,
     Key? key,
   }) : super(key: key);
 
@@ -25,32 +25,30 @@ class DriverScreen extends StatefulWidget {
 class _DriverScreenState extends State<DriverScreen> {
   @override
   Widget build(BuildContext context) {
-    final int maxSeats = 12; // Maksimal kapasitas kursi
+    final int maxSeats = 12;
     double percentage = widget.passengerCount / maxSeats;
     Color indicatorColor;
     String indicatorText;
 
-    // Logika warna indikator berdasarkan jumlah penumpang
     if (percentage == 1) {
-      indicatorColor = Colors.red; // Penuh
+      indicatorColor = Colors.red;
       indicatorText = "12/12, sudah penuh!";
     } else if (percentage >= 0.5) {
-      indicatorColor = Colors.orange; // Setengah penuh
+      indicatorColor = Colors.orange;
       indicatorText = "${widget.passengerCount}/12, kursi hampir penuh!";
     } else {
-      indicatorColor = Colors.green; // Masih banyak kursi
+      indicatorColor = Colors.green;
       indicatorText = "${widget.passengerCount}/12, masih bisa narik!";
     }
 
     return Scaffold(
       body: Stack(
         children: [
-          // Peta dengan rute
           FlutterMap(
             options: MapOptions(
               center: widget.routePoints.isNotEmpty
                   ? widget.routePoints.first
-                  : LatLng(-5.147665, 119.432731), // Pusat peta di lokasi pertama
+                  : LatLng(-5.147665, 119.432731),
               zoom: 14.0,
             ),
             children: [
@@ -69,7 +67,6 @@ class _DriverScreenState extends State<DriverScreen> {
               ),
             ],
           ),
-          // Indikator penumpang
           Positioned(
             top: 40,
             left: 20,
@@ -91,7 +88,6 @@ class _DriverScreenState extends State<DriverScreen> {
               ),
             ),
           ),
-          // Panel informasi rute dan tombol
           Positioned(
             bottom: 0,
             left: 0,
@@ -159,11 +155,20 @@ class _DriverScreenState extends State<DriverScreen> {
                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
-                      // Kembali ke halaman home saat tombol "Berhenti Narik" ditekan
+                      // Simpan data trayek ke history
+                      final tripHistory = TripHistory(
+                        trayekName: widget.trayekName,
+                        goRoute: widget.goRoute,
+                        backRoute: widget.backRoute,
+                        timestamp: DateTime.now(),
+                      );
+                      history.add(tripHistory);
+
+                      // Kembali ke halaman home
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, // Warna merah untuk tombol berhenti
+                      backgroundColor: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -185,3 +190,20 @@ class _DriverScreenState extends State<DriverScreen> {
     );
   }
 }
+
+class TripHistory {
+  final String trayekName;
+  final String goRoute;
+  final String backRoute;
+  final DateTime timestamp;
+
+  TripHistory({
+    required this.trayekName,
+    required this.goRoute,
+    required this.backRoute,
+    required this.timestamp,
+  });
+}
+
+// List untuk menyimpan riwayat trayek
+List<TripHistory> history = [];

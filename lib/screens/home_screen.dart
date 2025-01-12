@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pete/screens/History.dart';
 import 'package:flutter_pete/screens/faq_screen.dart';
 import 'package:flutter_pete/screens/profile_screen.dart';
 import 'package:flutter_pete/screens/schedule_screen.dart';
@@ -6,7 +7,7 @@ import 'package:flutter_pete/screens/schedule_screen.dart';
 class HomeScreen extends StatelessWidget {
   final String username;
 
-  const HomeScreen({Key? key, required this.username}) : super(key: key);
+  const HomeScreen({required this.username, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -116,37 +117,32 @@ class HomeScreen extends StatelessWidget {
 
             // Menu Section
             const Text(
-              'Layanan apa yang anda butuhkan?',
+              'Layanan',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 3,
+              childAspectRatio: 1.0,
+              mainAxisSpacing: 16.0,
+              crossAxisSpacing: 16.0,
               children: [
-                FeatureCard(
+                _MenuItem(
                   icon: Icons.directions_bus,
                   label: 'Pete-pete',
-                  width: MediaQuery.of(context).size.width / 4, // Define cardWidth dynamically
                   onTap: () {
                     print('Pete-pete ditekan');
-                  },
-                ),
-                _MenuItem(
-                  icon: Icons.schedule,
-                  label: 'Jadwal',
-                  onTap: () {
-                    // Navigasi ke ScheduleScreen tanpa mengganti layar sebelumnya
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => TrayekListScreen()),
-                    );
                   },
                 ),
                 _MenuItem(
                   icon: Icons.map,
                   label: 'Rute',
                   onTap: () {
-                    print('Rute ditekan');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TrayekListScreen()),
+                    );
                   },
                 ),
                 _MenuItem(
@@ -175,16 +171,21 @@ class HomeScreen extends StatelessWidget {
                 builder: (context) => HomeScreen(username: username),
               ),
             );
-          }
-          else if (index == 2) {
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HistoryScreen(username: username),
+              ),
+            );
+          }else if (index == 2) {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => FAQScreen(username: username),
               ),
             );
-          }
-          else if (index == 3) {
+          } else if (index == 3) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -192,7 +193,6 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           }
-
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Beranda'),
@@ -217,68 +217,31 @@ class _MenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        children: [
-          Icon(icon, size: 40, color: Colors.cyan),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class FeatureCard extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final double width;
-  final VoidCallback onTap;
-
-  const FeatureCard({
-    required this.icon,
-    required this.label,
-    required this.width,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: width, // Lebar card berdasarkan ukuran layar
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 48.0,
-            color: Colors.cyan,
-          ),
-          SizedBox(height: 8.0),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.w500,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3),
             ),
-          ),
-        ],
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 40, color: Colors.cyan),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

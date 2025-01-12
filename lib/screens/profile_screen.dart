@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pete/screens/History.dart';
 import 'package:flutter_pete/screens/faq_screen.dart';
 import 'package:flutter_pete/screens/login_screen.dart';
 import 'home_screen.dart';
@@ -18,7 +19,13 @@ class ProfileScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            // Kembali ke HomeScreen, bukan halaman sebelumnya
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(username: username),
+              ),
+            );
           },
         ),
         title: const Text(
@@ -68,6 +75,12 @@ class ProfileScreen extends StatelessWidget {
               title: const Text('Riwayat'),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HistoryScreen(username: username),
+                  ),
+                );
                 print('Riwayat ditekan');
               },
             ),
@@ -76,6 +89,12 @@ class ProfileScreen extends StatelessWidget {
               title: const Text('FAQ'),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FAQScreen(username: username),
+                  ),
+                );
                 print('FAQ ditekan');
               },
             ),
@@ -85,9 +104,9 @@ class ProfileScreen extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
                 print('Keluar ditekan');
               },
             ),
@@ -98,7 +117,7 @@ class ProfileScreen extends StatelessWidget {
         selectedItemColor: Colors.cyan,
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
-        currentIndex: 3, // Index halaman Profil
+        currentIndex: 3,
         onTap: (index) {
           if (index == 0) {
             Navigator.pushReplacement(
@@ -107,16 +126,21 @@ class ProfileScreen extends StatelessWidget {
                 builder: (context) => HomeScreen(username: username),
               ),
             );
-          }
-          else if (index == 2) {
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HistoryScreen(username: username),
+              ),
+            );
+          }else if (index == 2) {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => FAQScreen(username: username),
               ),
             );
-          }
-          else if (index == 3) {
+          } else if (index == 3) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -124,7 +148,6 @@ class ProfileScreen extends StatelessWidget {
               ),
             );
           }
-
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Beranda'),
