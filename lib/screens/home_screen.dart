@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pete/screens/Haltescreen.dart';
 import 'package:flutter_pete/screens/History.dart';
 import 'package:flutter_pete/screens/faq_screen.dart';
 import 'package:flutter_pete/screens/profile_screen.dart';
@@ -149,6 +150,10 @@ class HomeScreen extends StatelessWidget {
                   icon: Icons.home,
                   label: 'Halte',
                   onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HalteListScreen()),
+                    );
                     print('Halte ditekan');
                   },
                 ),
