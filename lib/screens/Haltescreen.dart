@@ -6,57 +6,57 @@ class HalteListScreen extends StatelessWidget {
   final List<Map<String, dynamic>> halteList = [
     {
       'name': 'Halte A',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'BTN Minasa Upa',
       'location': LatLng(-5.1862518741076, 119.4549252153959),
     },
     {
       'name': 'Halte B',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'Syech Yusuf',
       'location': LatLng(-5.189225844106793, 119.44795864917056),
     },
     {
       'name': 'Halte C',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'Sultan Alauddin',
       'location': LatLng(-5.1746123048921335, 119.43298482917724),
     },
     {
       'name': 'Halte D',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'Andi Tonro',
       'location': LatLng(-5.172427182002852, 119.42201452341928),
     },
     {
       'name': 'Halte E',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'Kumala',
       'location': LatLng(-5.178739738645198, 119.41969856998148),
     },
     {
       'name': 'Halte F',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'Ratulangi',
       'location': LatLng(-5.164657795101395, 119.4172607242575),
     },
     {
       'name': 'Halte G',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'Jendral Sudirman (Karebosi Timur)',
       'location': LatLng(-5.133093353032515, 119.41216306861821),
     },
     {
       'name': 'Halte H',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'HOS Cokroaminoto (Sentral)',
       'location': LatLng(-5.1309012556305555, 119.41381375888604),
     },
     {
       'name': 'Halte I',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'KH. Wahid Hasyim',
       'location': LatLng(-5.1281611232884945, 119.41359366685033),
     },
     {
       'name': 'Halte J',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'Wahidin Sudirohusodo',
       'location': LatLng(-5.134568360110945, 119.4956636125877),
     },
     {
       'name': 'Halte K',
-      'jalan': 'Jl. A. P. Pettarani',
+      'jalan': 'Pasar Butung',
       'location': LatLng(-5.123353640137265, 119.41222685030239),
     },
   ];
