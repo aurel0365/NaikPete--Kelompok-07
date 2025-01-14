@@ -10,7 +10,6 @@ class Pencarianpete extends StatelessWidget {
           children: [
             Column(
               children: [
-                // Search Bars
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
                   child: Column(
@@ -34,7 +33,6 @@ class Pencarianpete extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Bottom Card with Location Info
                 Container(
                   padding: const EdgeInsets.all(24.0),
                   decoration: BoxDecoration(

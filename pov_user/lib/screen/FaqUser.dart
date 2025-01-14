@@ -44,8 +44,8 @@ class FAQPage extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('FAQs', style: TextStyle(color: Colors.white)),
-          backgroundColor: const Color(0xFF42C8DC), // Warna utama biru
+          title: const Text('FAQs', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0))),
+          backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Warna utama biru
           elevation: 1,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),

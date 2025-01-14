@@ -30,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
-          'Profile',
+          '',
           style: TextStyle(
             color: Colors.black,
             fontSize: 20,

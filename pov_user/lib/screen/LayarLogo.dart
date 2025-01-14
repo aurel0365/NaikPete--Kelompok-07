@@ -1,40 +1,70 @@
 import 'package:flutter/material.dart';
 import 'SplashScreen1.dart';
 
-class LogoScreen extends StatelessWidget {
+class LogoScreen extends StatefulWidget {
+  @override
+  _LogoScreenState createState() => _LogoScreenState();
+}
+
+class _LogoScreenState extends State<LogoScreen> {
+  double _opacity = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Mulai animasi fade-in
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        _opacity = 1.0;
+      });
+    });
+
+    // Navigasi otomatis ke layar berikutnya setelah 5 detik dengan animasi transisi fade-in
+    Future.delayed(Duration(seconds: 5), () {
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => SplashScreen1(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            var tween = Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeInOut));
+            var fadeAnimation = animation.drive(tween);
+
+            return FadeTransition(
+              opacity: fadeAnimation,
+              child: child,
+            );
+          },
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Navigasi ke SplashScreen1 ketika area layar disentuh
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => SplashScreen1()),
-        );
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            double imageWidth = constraints.maxWidth * 0.6;
-            double titleFontSize = constraints.maxWidth * 0.06;
-            double subtitleFontSize = constraints.maxWidth * 0.04;
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double imageWidth = constraints.maxWidth * 0.6;
+          double titleFontSize = constraints.maxWidth * 0.06;
+          double subtitleFontSize = constraints.maxWidth * 0.04;
 
-            // Batas minimal dan maksimal untuk font agar tetap terbaca
-            titleFontSize = titleFontSize.clamp(16.0, 32.0);
-            subtitleFontSize = subtitleFontSize.clamp(12.0, 24.0);
+          titleFontSize = titleFontSize.clamp(16.0, 32.0);
+          subtitleFontSize = subtitleFontSize.clamp(12.0, 24.0);
 
-            return Center(
+          return Center(
+            child: AnimatedOpacity(
+              duration: Duration(seconds: 2), // Durasi animasi fade-in
+              opacity: _opacity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Logo Image
                   Image.asset(
                     'assets/images/AppLogo.png',
-                    width: imageWidth.clamp(100.0, 300.0), // Batas ukuran gambar
+                    width: imageWidth.clamp(100.0, 300.0),
                   ),
-                  const SizedBox(height: 10), // Jarak antara logo dan teks
-                  // App Name
+                  const SizedBox(height: 10),
                   Text(
                     "NaikPete'",
                     style: TextStyle(
@@ -43,7 +73,6 @@ class LogoScreen extends StatelessWidget {
                       color: const Color(0xFF42C8DC),
                     ),
                   ),
-                  // Subtitle
                   Text(
                     "Layanan Pete-Pete Online",
                     style: TextStyle(
@@ -53,9 +82,9 @@ class LogoScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
