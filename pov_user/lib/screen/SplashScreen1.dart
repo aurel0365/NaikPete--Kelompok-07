@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'SplashScreen2.dart';
 
 class SplashScreen1 extends StatelessWidget {
@@ -8,85 +7,109 @@ class SplashScreen1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Background Shape
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: 200.w,
-                  height: 200.h,
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(100.r),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 40.h),
+      backgroundColor: Colors.white,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // Mendapatkan dimensi layar
+          double screenWidth = constraints.maxWidth;
+          double screenHeight = constraints.maxHeight;
 
-            // Text Section
-            Column(
+          // Menentukan ukuran responsif untuk elemen UI
+          double circleSize = screenWidth * 0.5; // 50% dari lebar layar
+          double titleFontSize = screenWidth * 0.05; // 5% dari lebar layar
+          double subtitleFontSize = screenWidth * 0.035; // 3.5% dari lebar layar
+          double buttonFontSize = screenWidth * 0.04; // 4% dari lebar layar
+
+          // Batas minimal dan maksimal ukuran font agar tetap terbaca
+          titleFontSize = titleFontSize.clamp(18.0, 30.0);
+          subtitleFontSize = subtitleFontSize.clamp(14.0, 24.0);
+          buttonFontSize = buttonFontSize.clamp(14.0, 20.0);
+
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // Background Shape
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      width: circleSize.clamp(150.0, 300.0),
+                      height: circleSize.clamp(150.0, 300.0),
+                      decoration: BoxDecoration(
+                        color: Colors.lightBlue.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(circleSize / 2),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: screenHeight * 0.05), // Jarak antar elemen
+
+                // Text Section
                 Text(
                   'Temukan Perjalanan Kenyamanan \nAnda di sini',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 18.sp,
+                    fontSize: titleFontSize,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 10.h),
+                SizedBox(height: screenHeight * 0.02),
                 Text(
                   'Nikmati perjalanan tanpa ribet dengan pete-pete.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 14.sp,
+                    fontSize: subtitleFontSize,
                     color: Colors.grey,
+                  ),
+                ),
+                SizedBox(height: screenHeight * 0.05), // Jarak antar elemen
+
+                // Button Section
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => const SplashScreen2(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(0.0, 1.0);  // Mulai dari bawah
+                          const end = Offset.zero;
+                          const curve = Curves.easeInOut;
+                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                          var offsetAnimation = animation.drive(tween);
+
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SlideTransition(position: offsetAnimation, child: child),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                      borderRadius: BorderRadius.circular(screenWidth * 0.05),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: screenHeight * 0.015,
+                      horizontal: screenWidth * 0.2,
+                    ),
+                    child: Text(
+                      'Selanjutnya',
+                      style: TextStyle(
+                        fontSize: buttonFontSize,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 40.h),
-
-            // Button Section
-            GestureDetector(
-              onTap: () {
-                // Navigasi ke halaman LokasiDetailScreen ketika tombol "Selanjutnya" ditekan
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SplashScreen2(),
-                  ),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.lightBlue,
-                  borderRadius: BorderRadius.circular(20.r),
-                ),
-                padding: EdgeInsets.symmetric(
-                  vertical: 12.h,
-                  horizontal: 40.w,
-                ),
-                child: Text(
-                  'Selanjutnya',
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
