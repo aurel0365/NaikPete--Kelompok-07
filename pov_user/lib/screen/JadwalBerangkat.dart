@@ -8,7 +8,7 @@ class Jadwalberangkat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Color(0xFF42C8DC), // Updated background color
         foregroundColor: Colors.white,
         elevation: 4,
         automaticallyImplyLeading: false,
@@ -118,7 +118,10 @@ class _JadwalSemuaState extends State<JadwalSemua> {
               controller: _searchController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                prefixIcon: const Icon(Icons.search, color: Colors.blueAccent),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Color.fromRGBO(66, 200, 220, 1.0), 
+                  ),
                 hintText: "Silahkan Mencari Jadwal...",
                 hintStyle: TextStyle(color: Colors.grey[600]),
                 contentPadding: const EdgeInsets.symmetric(vertical: 14),
@@ -128,59 +131,68 @@ class _JadwalSemuaState extends State<JadwalSemua> {
           ),
         ),
         Expanded(
-          child: ListView.builder(
-            itemCount: _filteredJadwal.length, // Jumlah jadwal yang ditampilkan
-            itemBuilder: (context, index) {
-              final jadwal = _filteredJadwal[index];
-              return Card(
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                elevation: 4,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(12),
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      'https://via.placeholder.com/80', // Ganti dengan gambar asli
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  title: Text(
-                    jadwal['time']!,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  subtitle: Text(
-                    jadwal['route']!,
-                    style: const TextStyle(
-                      height: 1.5,
-                      color: Colors.black54,
-                    ),
-                  ),
-                  trailing: const Text(
-                    'Lihat lokasi',
+          child: _filteredJadwal.isEmpty
+              ? Center(
+                  child: Text(
+                    'Tidak mendapatkan hasil pencarian',
                     style: TextStyle(
-                      color: Color(0xFF42C8DC),
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.grey[700],
                     ),
                   ),
-                  onTap: () {
-                    // Navigasi ke halaman LokasiDetailScreen ketika tombol "Lihat lokasi" ditekan
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const Lihatlokasi(),
+                )
+              : ListView.builder(
+                  itemCount: _filteredJadwal.length,
+                  itemBuilder: (context, index) {
+                    final jadwal = _filteredJadwal[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(12),
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            'https://via.placeholder.com/80',
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        title: Text(
+                          jadwal['time']!,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        subtitle: Text(
+                          jadwal['route']!,
+                          style: const TextStyle(
+                            height: 1.5,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        trailing: const Text(
+                          'Lihat lokasi',
+                          style: TextStyle(
+                            color: Color(0xFF42C8DC),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Lihatlokasi(),
+                            ),
+                          );
+                        },
                       ),
                     );
                   },
                 ),
-              );
-            },
-          ),
         ),
       ],
     );

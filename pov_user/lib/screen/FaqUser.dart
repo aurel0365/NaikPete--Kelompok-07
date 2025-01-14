@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
-class FAQPage extends StatelessWidget {
+class FAQPage extends StatefulWidget {
+  @override
+  _FAQPageState createState() => _FAQPageState();
+}
+
+class _FAQPageState extends State<FAQPage> {
+  String _searchQuery = '';
+  
   final List<Map<String, dynamic>> faqCategories = [
     {
       'category': 'Tentang Aplikasi Naik Pete\'',
@@ -40,37 +47,56 @@ class FAQPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('FAQs', style: TextStyle(color: Color.fromARGB(255, 0, 0, 0))),
-          backgroundColor: const Color.fromARGB(255, 255, 255, 255), // Warna utama biru
-          elevation: 1,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () {
-              Navigator.pop(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('FAQs', style: TextStyle(color: Colors.black)),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255), // White background
+        elevation: 1,
+        leading: _buildCustomBackButton(context),
+      ),
+      body: Column(
+        children: [
+          _searchField(),
+          const SizedBox(height: 20),
+          FAQContent(
+            faqCategories: faqCategories,
+            searchQuery: _searchQuery,
+            onSearchChanged: (query) {
+              setState(() {
+                _searchQuery = query;
+              });
             },
           ),
-          bottom: TabBar(
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.black54,
-            indicatorColor: Colors.white,
-            tabs: const [
-              Tab(text: 'Feedback'),
-              Tab(text: 'FAQs'),
-              Tab(text: 'What\'s New'),
-            ],
-          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCustomBackButton(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back, color: Color(0xFF42C8DC)), // Ikon biru
+      onPressed: () {
+        Navigator.pop(context); // Kembali ke layar sebelumnya
+      },
+    );
+  }
+
+  Widget _searchField() {
+    return TextField(
+      onChanged: (query) {
+        setState(() {
+          _searchQuery = query;
+        });
+      },
+      decoration: InputDecoration(
+        hintText: 'Cari berdasarkan kata kunci',
+        prefixIcon: const Icon(Icons.search, color: Colors.black54),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide.none,
         ),
-        body: TabBarView(
-          children: [
-            const Center(child: Text('Feedback Page')),
-            FAQContent(faqCategories: faqCategories),
-            const Center(child: Text('What\'s New Page')),
-          ],
-        ),
+        filled: true,
+        fillColor: Colors.grey[200],
       ),
     );
   }
@@ -78,81 +104,81 @@ class FAQPage extends StatelessWidget {
 
 class FAQContent extends StatelessWidget {
   final List<Map<String, dynamic>> faqCategories;
+  final String searchQuery;
 
-  const FAQContent({required this.faqCategories});
+  const FAQContent({
+    required this.faqCategories,
+    required this.searchQuery, required Null Function(dynamic query) onSearchChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Expanded(
+      child: ListView(
+        children: faqCategories.map((category) {
+          // Filter FAQ berdasarkan pencarian
+          final filteredFaqs = category['faqs']
+              .where((faq) => faq['question'].toLowerCase().contains(searchQuery.toLowerCase()))
+              .toList();
+
+          if (filteredFaqs.isEmpty) return Container(); // Tidak ada hasil, kosongkan widget
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _categoryTitle(category['category']),
+              const SizedBox(height: 10),
+              ...filteredFaqs.map<Widget>((faq) {
+                return _faqCard(faq);
+              }).toList(),
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
+
+  Widget _categoryTitle(String category) {
+    return Text(
+      category,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: Color(0xFF42C8DC), // Main color
+      ),
+    );
+  }
+
+  Widget _faqCard(Map<String, dynamic> faq) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Card(
+        color: Colors.white,
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: ExpansionTile(
+          iconColor: const Color(0xFF42C8DC), // Main color
+          collapsedIconColor: Colors.black54,
+          title: Text(
+            faq['question'],
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
           children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Cari berdasarkan kata kunci',
-                prefixIcon: const Icon(Icons.search, color: Colors.black54),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide.none,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                faq['answer'],
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black54,
                 ),
-                filled: true,
-                fillColor: Colors.grey[200],
               ),
             ),
-            const SizedBox(height: 20),
-            ...faqCategories.map((category) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    category['category'],
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF42C8DC), // Warna utama
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ...List<Widget>.from(category['faqs'].map((faq) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
-                      child: Card(
-                        color: Colors.white,
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ExpansionTile(
-                          iconColor: const Color(0xFF42C8DC), // Warna utama
-                          collapsedIconColor: Colors.black54,
-                          title: Text(
-                            faq['question'],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                faq['answer'],
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  })),
-                ],
-              );
-            }),
           ],
         ),
       ),

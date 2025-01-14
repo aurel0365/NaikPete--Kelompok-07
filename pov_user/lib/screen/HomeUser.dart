@@ -169,23 +169,35 @@ class HomeScreenBody extends StatelessWidget {
   }
 
   Widget _buildImageCarousel() {
-    return SizedBox(
-      height: 180,
-      child: PageView.builder(
-        itemBuilder: (context, index) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.asset(
-              'assets/images/Tiket.png',
-              height: 180,
+  return SizedBox(
+    height: 250, // Tinggi yang sesuai untuk desktop dan mobile
+    child: PageView.builder(
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0), // Jarak antar item
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16), // Membuat sudut melengkung
+            child: Container(
+              color: Colors.black, // Latar belakang hitam untuk banner
               width: double.infinity,
-              fit: BoxFit.cover,
+              height: 250, // Tinggi tetap
+              child: Center(
+                child: Text(
+                  'Banner ${index + 1}', // Menampilkan teks sebagai indikasi banner
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
-          );
-        },
-      ),
-    );
-  }
+          ),
+        );
+      },
+    ),
+  );
+}
 
   Widget _buildServiceGrid(BuildContext context) {
     return GridView.count(

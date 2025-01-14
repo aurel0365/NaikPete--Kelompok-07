@@ -1,14 +1,51 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EditProfileScreen extends StatefulWidget {
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
 }
-
 class _EditProfileScreenState extends State<EditProfileScreen> {
   File? _image;
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController(); // Add phone controller
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData();
+  }
+
+  Future<void> _loadProfileData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _nameController.text = prefs.getString('name') ?? "John Doe";
+      _emailController.text = prefs.getString('email') ?? "johndoe@gmail.com";
+      _usernameController.text = prefs.getString('username') ?? "@johndoe";
+      _passwordController.text = prefs.getString('password') ?? "********";
+      _phoneController.text = prefs.getString('phone') ?? ""; // Load phone number
+    });
+  }
+
+  Future<void> _saveProfile() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('name', _nameController.text);
+    await prefs.setString('email', _emailController.text);
+    await prefs.setString('username', _usernameController.text);
+    await prefs.setString('password', _passwordController.text);
+
+    // Kembalikan nama baru ke layar sebelumnya
+    Navigator.pop(context, _nameController.text);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Profile saved successfully!')),
+    );
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
@@ -55,7 +92,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile', style: TextStyle(color: Colors.black)),
+        title: Text('Edit Profil', style: TextStyle(color: Colors.black)),
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: Colors.black),
@@ -81,22 +118,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              _buildInputField('Name', 'John Doe'),
+              _buildInputField('Name', _nameController),
               SizedBox(height: 15),
-              _buildInputField('Email Address', 'johndoe@gmail.com'),
+              _buildInputField('Email Address', _emailController),
               SizedBox(height: 15),
-              _buildInputField('Username', '@johndoe'),
+              _buildInputField('Username', _usernameController),
               SizedBox(height: 15),
-              _buildInputField('Password', '********', isPassword: true),
+              _buildInputField('Password', _passwordController, isPassword: true),
               SizedBox(height: 15),
-              _buildInputField('Join Date', 'Jan 2022', isReadOnly: true),
-              SizedBox(height: 30),
-              TextButton(
-                onPressed: () {
-                  // Perform logout
-                },
-                child: Text('Logout', style: TextStyle(color: Colors.red)),
+              _buildInputField('Phone Number', _phoneController), // Add phone number field
+              SizedBox(height: 40), // Increased space before the save button
+              ElevatedButton(
+                onPressed: _saveProfile,
+                child: Text('Simpan Perubahan', style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255))),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 50), backgroundColor: Color(0xFF42C8DC), // Changed button color
+                ),
               ),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -104,7 +143,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _buildInputField(String label, String placeholder, {bool isPassword = false, bool isReadOnly = false}) {
+  Widget _buildInputField(String label, TextEditingController controller, {bool isPassword = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -118,11 +157,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
         SizedBox(height: 5),
         TextField(
-          readOnly: isReadOnly,
+          controller: controller,
           obscureText: isPassword,
           decoration: InputDecoration(
-            hintText: placeholder,
-            hintStyle: TextStyle(color: Colors.black),
             contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
