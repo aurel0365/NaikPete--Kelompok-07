@@ -1,103 +1,110 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_textfield.dart';
-import 'HomeUser.dart';
-import 'signup.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  // Controller untuk input data
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
-  // Fungsi untuk mengirim data ke backend
-  void login() async {
-  final name = nameController.text;
-  final password = passwordController.text;
-
-  // TODO: Lakukan koneksi ke backend PHP untuk verifikasi login
-
-  // Simulasi login berhasil
-  if (name.isNotEmpty && password.isNotEmpty) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => HomeScreens(username: name)),
-    );
-  } else {
-    // Tampilkan error jika input kosong
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Nama atau kata sandi tidak boleh kosong')),
-    );
-  }
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Icon(Icons.directions_bus, size: 80, color: Colors.cyan),
-            const SizedBox(height: 20),
-            const Text(
-              'Halo, mitra NaikPete\'',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            width: 400, // Menentukan lebar kotak agar tetap kurus
+            padding: const EdgeInsets.all(32.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Yuk, masuk untuk mulai perjalanan',
-              style: TextStyle(color: Colors.grey),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 20),
+                const Text(
+                  'Log in',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Hello, friend! I'm Smarttime - task manager you can trust everything. Let's get in touch!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                // Input Email
+                TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Email',
+                    prefixIcon: Icon(Icons.email, color: Color(0xFF2ECC71)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Input Password
+                TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    prefixIcon: Icon(Icons.lock, color: Color(0xFF2ECC71)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+                  ),
+                ),
+                const SizedBox(height: 30),
+                // Tombol Login
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2ECC71),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    // Implementasi Login
+                  },
+                  child: const Text(
+                    "Let's start!",
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    // Aksi Sign Up
+                  },
+                  child: const Text(
+                    "Don’t have an account? Sign up",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Color(0xFF2ECC71), fontSize: 14),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            CustomTextField(
-              hintText: 'Nama',
-              controller: nameController,
-            ),
-            CustomTextField(
-              hintText: 'Kata sandi',
-              isPassword: true,
-              controller: passwordController,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.cyan,
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-              ),
-              onPressed: login,
-              child: const Text('Masuk', style: TextStyle(color: Colors.white)),
-            ),
-            const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () {
-              }
-            ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                // Pindah ke halaman registrasi
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RegisterScreen()),
-                );
-              },
-              child: const Text(
-                'Belum memiliki akun? Daftar',
-                style: TextStyle(color: Colors.cyan),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
+      backgroundColor: const Color(0xFFF5F5F5), // Warna latar belakang
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/custom_textfield.dart';
 import 'login.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -10,7 +9,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  // Controllers untuk input data
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -18,10 +16,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController cityController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // Variabel untuk menyimpan pilihan peran (Driver/User)
   String? selectedRole;
 
-  // Fungsi untuk validasi input
   bool validateForm() {
     if (firstNameController.text.isEmpty) {
       showError("Nama depan wajib diisi");
@@ -54,25 +50,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return true;
   }
 
-  // Fungsi untuk mengecek apakah input hanya angka
   bool isNumeric(String value) {
     return RegExp(r'^[0-9]+$').hasMatch(value);
   }
 
-  // Fungsi untuk menampilkan pesan error
   void showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
   }
 
-  // Fungsi untuk mengirim data ke backend dan navigasi ke halaman login
   void register() {
     if (!validateForm()) {
-      return; // Jika validasi gagal, jangan lanjut
+      return;
     }
 
-    // Simpan data dan lakukan pengiriman ke backend
     print("Registrasi data dikirim ke backend");
     print("Nama depan: ${firstNameController.text}");
     print("Nama belakang: ${lastNameController.text}");
@@ -82,10 +74,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     print("Password: ${passwordController.text}");
     print("Peran: $selectedRole");
 
-    // Navigasi ke halaman login
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      MaterialPageRoute(builder: (context) =>  LoginScreen()),
     );
   }
 
@@ -93,90 +84,55 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.cyan[700],
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Kembali ke halaman sebelumnya
+            Navigator.pop(context);
           },
         ),
         title: const Text(
           'Daftar',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.white),
         ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const SizedBox(height: 20),
             const Text(
               'Isi Data',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.cyan,
+              ),
             ),
             const SizedBox(height: 10),
-            const Text('Daftar menjadi mitra NaikPete\'',
-                style: TextStyle(color: Colors.grey)),
-            const SizedBox(height: 20),
-
-            // Input Nama Depan
-            CustomTextField(
-                hintText: 'Nama depan', controller: firstNameController),
-
-            // Input Nama Belakang
-            CustomTextField(
-                hintText: 'Nama belakang', controller: lastNameController),
-
-            // Input Email
-            CustomTextField(hintText: 'Email', controller: emailController),
-
-            // Input Nomor Telepon
-            TextField(
-              controller: phoneController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: 'Nomor telepon',
-                prefixIcon: const Icon(Icons.phone),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
+            const Text(
+              'Daftar menjadi mitra NaikPete',
+              style: TextStyle(color: Colors.grey),
             ),
+            const SizedBox(height: 20),
 
-            // Input Kota
-            CustomTextField(hintText: 'Kota', controller: cityController),
-
-            // Input Password
-            CustomTextField(
-                hintText: 'Password',
-                isPassword: true,
-                controller: passwordController),
+            _buildTextField(firstNameController, 'Nama depan', Icons.person),
+            _buildTextField(lastNameController, 'Nama belakang', Icons.person_outline),
+            _buildTextField(emailController, 'Email', Icons.email, keyboardType: TextInputType.emailAddress),
+            _buildTextField(passwordController, 'Password', Icons.lock, obscureText: true),
+            _buildTextField(phoneController, 'Nomor telepon', Icons.phone, keyboardType: TextInputType.number),
+            _buildTextField(cityController, 'Kota', Icons.location_city),
 
             const SizedBox(height: 20),
 
-            // Dropdown untuk memilih peran
-            DropdownButtonFormField<String>(
-              value: selectedRole,
-              decoration: InputDecoration(
-                hintText: 'Pilih peran Anda',
-                filled: true,
-                fillColor: Colors.grey[200],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-              items: const [
-                DropdownMenuItem(value: 'Driver', child: Text('Driver')),
-                DropdownMenuItem(value: 'User', child: Text('User')),
+            // Pilih Peran (Radio Button)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildRadioButton('User', 'User'),
+                _buildRadioButton('Driver', 'Driver'),
               ],
-              onChanged: (value) {
-                setState(() {
-                  selectedRole = value;
-                });
-              },
             ),
 
             const SizedBox(height: 20),
@@ -184,16 +140,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
             // Tombol Selanjutnya
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.cyan,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                backgroundColor: Colors.cyan[600],
+                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
               ),
               onPressed: register,
-              child: const Text('Selanjutnya',
-                  style: TextStyle(color: Colors.white)),
+              child: const Text('Selanjutnya', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Fungsi untuk membuat text field dengan styling konsisten
+  Widget _buildTextField(TextEditingController controller, String hintText, IconData icon, {TextInputType keyboardType = TextInputType.text, bool obscureText = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        obscureText: obscureText,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          hintText: hintText,
+          prefixIcon: Icon(icon, color: Colors.cyan),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: const BorderSide(color: Colors.cyan, width: 2.0),
+          ),
+          contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+        ),
+      ),
+    );
+  }
+
+  // Fungsi untuk membuat radio button dengan styling konsisten
+  Widget _buildRadioButton(String title, String value) {
+    return Expanded(
+      child: RadioListTile<String>(
+        title: Text(title),
+        value: value,
+        groupValue: selectedRole,
+        onChanged: (value) {
+          setState(() {
+            selectedRole = value;
+          });
+        },
+        activeColor: Colors.cyan,
+        contentPadding: const EdgeInsets.all(0),
       ),
     );
   }
