@@ -7,7 +7,7 @@ import 'ProfileUser.dart';
 import 'Tiket.dart';
 
 class HomeScreens extends StatefulWidget {
-  const HomeScreens({super.key});
+  const HomeScreens({super.key, required String username});
 
   @override
   _HomeScreenState createState() => _HomeScreenState();

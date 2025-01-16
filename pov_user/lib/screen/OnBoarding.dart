@@ -31,7 +31,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _goToHomeScreen() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => HomeScreens()),
+      MaterialPageRoute(builder: (context) => HomeScreens(username: '',)),
     );
   }
 
