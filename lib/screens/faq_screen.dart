@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pete/screens/History.dart';
 import 'package:flutter_pete/screens/home_screen.dart';
 import 'package:flutter_pete/screens/profile_screen.dart';
 
@@ -38,7 +39,13 @@ class FAQScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context); // Kembali ke halaman sebelumnya
+            // Kembali ke HomeScreen, bukan halaman sebelumnya
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(username: username),
+              ),
+            );
           },
         ),
       ),
@@ -123,16 +130,21 @@ class FAQScreen extends StatelessWidget {
                 builder: (context) => HomeScreen(username: username),
               ),
             );
-          }
-          else if (index == 2) {
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HistoryScreen(username: username),
+              ),
+            );
+          }else if (index == 2) {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => FAQScreen(username: username),
               ),
             );
-          }
-          else if (index == 3) {
+          } else if (index == 3) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -140,7 +152,6 @@ class FAQScreen extends StatelessWidget {
               ),
             );
           }
-
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Beranda'),
