@@ -8,31 +8,24 @@ class Jadwalberangkat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF42C8DC), // Updated background color
+        backgroundColor: Color(0xFF42C8DC), // Warna latar belakang biru
         foregroundColor: Colors.white,
         elevation: 4,
         automaticallyImplyLeading: false,
-        toolbarHeight: 120,
+        toolbarHeight: 100, 
         title: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 20),
             const Text(
               'Jadwal Berangkat',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Pilih jadwal keberangkatan dengan mudah',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
-              ),
-            ),
+            const SizedBox(height: 5), 
           ],
         ),
         centerTitle: true,
@@ -118,10 +111,10 @@ class _JadwalSemuaState extends State<JadwalSemua> {
               controller: _searchController,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Color.fromRGBO(66, 200, 220, 1.0), 
-                  ),
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Color.fromRGBO(66, 200, 220, 1.0), 
+                ),
                 hintText: "Silahkan Mencari Jadwal...",
                 hintStyle: TextStyle(color: Colors.grey[600]),
                 contentPadding: const EdgeInsets.symmetric(vertical: 14),

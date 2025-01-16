@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'SplashScreen1.dart';
+import 'OnBoarding.dart';
 
 class LogoScreen extends StatefulWidget {
   @override
@@ -25,7 +25,7 @@ class _LogoScreenState extends State<LogoScreen> {
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => SplashScreen1(),
+          pageBuilder: (context, animation, secondaryAnimation) => OnboardingScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             var tween = Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeInOut));
             var fadeAnimation = animation.drive(tween);

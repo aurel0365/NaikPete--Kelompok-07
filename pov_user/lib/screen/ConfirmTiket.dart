@@ -1,156 +1,122 @@
 import 'package:flutter/material.dart';
+
 import 'MetodePembayaran.dart';
 
-class ConfirmationScreen extends StatelessWidget {
-  const ConfirmationScreen({super.key});
+class TicketConfirmationScreen extends StatelessWidget {
+  const TicketConfirmationScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.all(20.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 40), // Menambah jarak atas
-                  // Header dengan ikon dan teks
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 40.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.confirmation_num, color: Color(0xFF42C8DC), size: 35),
-                        SizedBox(width: 12),
-                        Text(
-                          'Rincian Pembelian',
-                          style: TextStyle(
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF42C8DC),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Card container untuk rincian tiket
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Card(
-                      elevation: 8,
-                      shadowColor: Colors.grey.withOpacity(0.3),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            _buildDetailRow('Jenis Tiket', 'One Day Pass'),
-                            _buildDetailRow('Jumlah Tiket', '1'),
-                            _buildDetailRow('Harga Per Tiket', 'IDR 7,000'),
-                            Divider(thickness: 1.5, color: Colors.grey.withOpacity(0.5)),
-                            _buildDetailRow(
-                              'Total Pembayaran', 
-                              'IDR 7,000', 
-                              isTotal: true
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 60), // Tambah jarak bawah
-                  // Tombol "Lanjut ke Pembayaran"
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => PaymentMethodScreen()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF42C8DC), 
-                      padding: EdgeInsets.symmetric(horizontal: 80, vertical: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      shadowColor: Colors.grey.withOpacity(0.4),
-                      elevation: 12,
-                    ),
-                    child: Text(
-                      "Lanjut ke Pembayaran",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+      backgroundColor: const Color(0xFFF8EDEB),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          'Pemesanan Tiket',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Image.asset(
+                      'assets/images/Tiket.png',
+                      height: 200, // Ukuran gambar diperbesar
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  _detailRow('Harga Tiket', 'Rp 7.000'),
+                  const SizedBox(height: 12),
+                  _detailRow('Tanggal', '16 Januari 2025'),
+                  const SizedBox(height: 12),
+                  _detailRow('Berlaku Hingga', '24 Jam Setelah Pembelian'),
+                ],
+              ),
             ),
-          ),
-          _buildCustomBackButton(context), // Menambahkan tombol kembali
-        ],
-      ),
-    );
-  }
-
-  // Helper function untuk membuat row rincian tiket
-  Widget _buildDetailRow(String title, String value, {bool isTotal = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.black87,
-              fontWeight: FontWeight.w600,
+            const Spacer(),
+            ElevatedButton(
+               onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PaymentMethodScreen()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: const Color(0xFF42C8DC),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Center(
+                child: Text(
+                  'Bayar',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              color: isTotal ? Colors.green : Colors.black54,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Widget tombol kembali kustom
-  Widget _buildCustomBackButton(BuildContext context) {
-    return Positioned(
-      top: 16,
-      left: 16,
-      child: Container(
-        margin: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(51, 83, 232, 255), // Latar belakang soft blue
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
+            const SizedBox(height: 20),
           ],
         ),
-        child: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF42C8DC)), // Ikon biru
-          onPressed: () {
-            Navigator.pop(context); // Kembali ke layar sebelumnya
-          },
-        ),
       ),
+    );
+  }
+
+  Widget _detailRow(String title, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16, // Ukuran teks diperbesar
+            color: Colors.grey,
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 16, // Ukuran teks diperbesar
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }
