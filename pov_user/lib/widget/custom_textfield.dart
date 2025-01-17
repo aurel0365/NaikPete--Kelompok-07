@@ -9,7 +9,7 @@ class CustomTextField extends StatelessWidget {
     Key? key,
     required this.hintText,
     this.isPassword = false,
-    required this.controller, required double borderRadius,
+    required this.controller, required TextInputType keyboardType, required BorderRadius borderRadius,
   }) : super(key: key);
 
   @override
