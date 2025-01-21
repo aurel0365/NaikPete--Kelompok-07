@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../widget/BottomNavBar.dart';
 import 'JadwalBerangkat.dart';
@@ -45,36 +47,99 @@ class _HomeScreenState extends State<HomeScreens> {
   }
 }
 
-class HomeScreenBody extends StatelessWidget {
+class HomeScreenBody extends StatefulWidget {
+  @override
+  _HomeScreenBodyState createState() => _HomeScreenBodyState();
+}
+
+class _HomeScreenBodyState extends State<HomeScreenBody> {
+  final List<String> imageUrls = [
+    'assets/images/berita1.jpg',
+    'assets/images/berita2.jpg',
+  ];
+
+  late PageController _pageController;
+  int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _currentPage);
+
+    // Timer untuk mengontrol auto-scroll setiap 3 detik
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Timer.periodic(Duration(seconds: 3), (Timer timer) {
+        if (_pageController.hasClients) {
+          if (_currentPage < imageUrls.length - 1) {
+            _currentPage++;
+          } else {
+            _currentPage = 0;
+          }
+          _pageController.animateToPage(
+            _currentPage,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 40),
-            _buildWelcomeSection(context),
-            const SizedBox(height: 20),
-            _buildSearchBar(),
-            const SizedBox(height: 20),
-            _buildImageCarousel(),
-            const SizedBox(height: 30),
-            const Text(
-              "Layanan",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+    return Stack(
+      children: [
+        _buildBackgroundCarousel(),
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 40),
+                _buildWelcomeSection(context),
+                const SizedBox(height: 20),
+                _buildSearchBar(),
+                const SizedBox(height: 30),
+                const Text(
+                  "Layanan",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _buildServiceGrid(context),
+                const SizedBox(height: 30),
+                _buildInfoSection(),
+              ],
             ),
-            const SizedBox(height: 20),
-            _buildServiceGrid(context),
-            const SizedBox(height: 30),
-            _buildInfoSection(),
-          ],
+          ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildBackgroundCarousel() {
+    return SizedBox(
+      height: 300,
+      child: PageView.builder(
+        controller: _pageController,
+        itemCount: imageUrls.length,
+        itemBuilder: (context, index) {
+          return Image.asset(
+            imageUrls[index],
+            fit: BoxFit.cover,
+            width: double.infinity,
+          );
+        },
       ),
     );
   }
@@ -91,8 +156,15 @@ class HomeScreenBody extends StatelessWidget {
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Colors.white, // Ubah warna teks menjadi putih
                 fontFamily: 'Montserrat',
+                shadows: [
+                  Shadow(
+                    offset: Offset(1.5, 1.5),
+                    blurRadius: 4.0,
+                    color: Colors.black54, // Tambahkan bayangan agar teks terlihat lebih jelas
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 4),
@@ -103,8 +175,15 @@ class HomeScreenBody extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Colors.white, // Ubah warna teks menjadi putih
                     fontFamily: 'Montserrat',
+                    shadows: [
+                      Shadow(
+                        offset: Offset(1.5, 1.5),
+                        blurRadius: 4.0,
+                        color: Colors.black54, // Tambahkan bayangan agar teks terlihat lebih jelas
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(width: 6),
@@ -119,13 +198,13 @@ class HomeScreenBody extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(51, 83, 232, 255),
+                color: const Color.fromARGB(150, 66, 200, 220), // Background lebih solid dengan transparansi
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
+                    color: Colors.black.withOpacity(0.2), // Bayangan lebih tajam
+                    blurRadius: 10,
+                    offset: const Offset(0, 5),
                   ),
                 ],
               ),
@@ -133,8 +212,8 @@ class HomeScreenBody extends StatelessWidget {
             IconButton(
               icon: const Icon(
                 Icons.notifications,
-                color: Color(0xFF42C8DC),
-                size: 28,
+                color: Colors.white, // Ubah ikon menjadi putih
+                size: 30, // Perbesar ukuran ikon
               ),
               onPressed: () {
                 Navigator.push(
@@ -151,53 +230,59 @@ class HomeScreenBody extends StatelessWidget {
 
   Widget _buildSearchBar() {
     return Container(
-      height: 50,
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20), // Membuat sudut lebih bulat
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      child: const TextField(
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          prefixIcon: Icon(Icons.search, color: Colors.grey),
-          hintText: "Silahkan Mencari",
-          hintStyle: TextStyle(color: Colors.grey),
-          contentPadding: EdgeInsets.symmetric(vertical: 14),
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 16),
+          _buildLocationInput(Icons.location_on, "Lokasi anda saat ini", Colors.cyan),
+          const SizedBox(height: 16),
+          _buildLocationInput(Icons.location_on, "Tujuan anda saat ini", Colors.red),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity, // Membuat tombol selebar container
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF42C8DC),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text("Cari", style: TextStyle(color: Colors.white)),
+            ),
+          )
+        ],
       ),
     );
   }
 
-  Widget _buildImageCarousel() {
-  return SizedBox(
-    height: 250, // Tinggi yang sesuai untuk desktop dan mobile
-    child: PageView.builder(
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0), // Jarak antar item
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16), // Membuat sudut melengkung
-            child: Container(
-              color: Colors.black, // Latar belakang hitam untuk banner
-              width: double.infinity,
-              height: 250, // Tinggi tetap
-              child: Center(
-                child: Text(
-                  'Banner ${index + 1}', // Menampilkan teks sebagai indikasi banner
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    ),
-  );
-}
+  Widget _buildLocationInput(IconData icon, String hintText, Color color) {
+    return TextField(
+      decoration: InputDecoration(
+        prefixIcon: Icon(
+          icon,
+          color: color, // Warna ikon sesuai dengan parameter
+        ),
+        hintText: hintText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20), // Membuat sudut lebih bulat
+        ),
+        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+      ),
+    );
+  }
 
   Widget _buildServiceGrid(BuildContext context) {
     return GridView.count(

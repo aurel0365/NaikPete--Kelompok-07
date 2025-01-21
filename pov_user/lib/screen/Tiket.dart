@@ -11,120 +11,101 @@ class TicketScreen extends StatelessWidget {
         backgroundColor: Colors.white, // Warna putih untuk latar belakang AppBar
         foregroundColor: Colors.black, // Warna hitam untuk teks dan ikon
         elevation: 0,
-        automaticallyImplyLeading: false, // Menghapus ikon back
-        title: const Text(
-          ' ',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         centerTitle: true,
       ),
       body: Container(
         color: Colors.white,
-        padding: const EdgeInsets.all(20), // Menambahkan padding ke seluruh body
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Gambar tiket dengan bayangan
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                      constraints: BoxConstraints(
-                        maxWidth: 800, // Maksimal lebar gambar
-                        maxHeight: 400, // Maksimal tinggi gambar
-                      ),
-                      child: Image.asset(
-                        'assets/images/Tiket.png',
-                        fit: BoxFit.cover, // Gambar tetap proporsional
-                      ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Gambar tiket dengan border
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
                     ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    'assets/images/Tiket.png',
+                    fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: 40),
-                // Nama tiket dengan font cantik
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    double fontSize = constraints.maxWidth > 600 ? 28 : 24;
-                    return Text(
-                      "Tiket One Day",
-                      style: TextStyle(
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF42C8DC),
-                        shadows: [
-                          Shadow(
-                            color: Colors.grey.withOpacity(0.4),
-                            blurRadius: 8,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+              ),
+              const SizedBox(height: 20),
+              // Nama tiket
+              const Text(
+                "Tiket One Day",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF42C8DC),
                 ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Nikmati perjalanan seharian penuh dengan tiket satu hari.\nAkses ke seluruh rute tanpa batas!",
-                  textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              // Deskripsi tiket
+              const Text(
+                "Nikmati perjalanan seharian penuh dengan one day tiket akses semua rute yang anda inginkan!!",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black87,
+                  height: 1.5,
+                ),
+              ),
+              const SizedBox(height: 30),
+              // Harga tiket
+              const Text(
+                "10.000 IDR",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF42C8DC),
+                ),
+              ),
+              const SizedBox(height: 40),
+              // Tombol untuk membeli tiket
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TicketConfirmationScreen(),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF42C8DC),
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  "Beli Tiket",
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.black87,
-                    height: 1.5,
-                  ),
-                ),
-                const SizedBox(height: 30),
-                // Harga tiket
-                const Text(
-                  "Harga: IDR 7,000",
-                  style: TextStyle(
-                    fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF42C8DC),
+                    color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 40),
-                // Tombol untuk membeli tiket
-                ElevatedButton(
-                  onPressed: () {
-                    // Arahkan ke layar Konfirmasi Pembelian
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => TicketConfirmationScreen()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF42C8DC),
-                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    shadowColor: Colors.grey.withOpacity(0.4),
-                    elevation: 6,
-                  ),
-                  child: const Text(
-                    "Beli Tiket",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 30),
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+            ],
           ),
         ),
       ),

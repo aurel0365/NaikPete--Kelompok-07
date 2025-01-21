@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pov_user/screen/ConfirmTiket.dart';
 
 class PaymentMethodScreen extends StatelessWidget {
   const PaymentMethodScreen({super.key});
@@ -7,29 +8,29 @@ class PaymentMethodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5FA),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: _buildCustomBackButton(context),
-        centerTitle: true,
-        title: const Padding(
-          padding: EdgeInsets.only(top: 10.0), // Memberikan jarak di atas ikon dan judul
-          child: Text(
-            'Metode Pembayaran',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80), // Menambahkan ukuran appBar yang lebih besar
+        child: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: _buildCustomBackButton(context),
+          centerTitle: true,
         ),
-        toolbarHeight: 70, // Menambahkan tinggi toolbar untuk memberikan ruang lebih
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, // Memperbaiki agar konten lebih rapi
           children: [
-            const SizedBox(height: 30), // Menambahkan jarak di atas elemen pertama
+            const Text(
+              'Metode Pembayaran',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 24,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 30),
             _buildPaymentOption(title: 'OVO'),
             const SizedBox(height: 10),
             _buildPaymentOption(title: 'Kartu Debit'),
@@ -37,11 +38,10 @@ class PaymentMethodScreen extends StatelessWidget {
             _buildCreditCardOptions(),
             const SizedBox(height: 10),
             _buildAddNewCardButton(),
-            const SizedBox(height: 20),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(bottom: 20.0), // Mengangkat tombol Bayar ke atas
-              child: _buildCheckoutButton(),
+              child: _buildCheckoutButton(context),
             ),
           ],
         ),
@@ -51,28 +51,24 @@ class PaymentMethodScreen extends StatelessWidget {
 
   // Custom Back Button
   Widget _buildCustomBackButton(BuildContext context) {
-    return Positioned(
-      top: 16,
-      left: 16,
-      child: Container(
-        margin: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(51, 83, 232, 255), // Latar belakang soft blue
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF42C8DC)), // Ikon biru
-          onPressed: () {
-            Navigator.pop(context); // Kembali ke layar sebelumnya
-          },
-        ),
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE0F7FA), // Soft blue background for the button
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Color(0xFF42C8DC)),
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
     );
   }
@@ -82,7 +78,14 @@ class PaymentMethodScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,7 +109,14 @@ class PaymentMethodScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +189,14 @@ class PaymentMethodScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -199,9 +216,14 @@ class PaymentMethodScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCheckoutButton() {
-    return ElevatedButton(
-      onPressed: () {},
+  Widget _buildCheckoutButton(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TicketConfirmationScreen()),
+        );
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF42C8DC),
         shape: RoundedRectangleBorder(
@@ -211,7 +233,7 @@ class PaymentMethodScreen extends StatelessWidget {
         minimumSize: const Size(double.infinity, 50),
       ),
       child: const Text(
-        'Bayar',
+        'Selnajutnya',
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,

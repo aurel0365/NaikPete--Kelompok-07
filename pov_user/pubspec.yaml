@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   get: ^4.6.6
   flutter_screenutil: ^5.9.3
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +67,8 @@ flutter:
   assets:
     - assets/images/Tiket.png
     - assets/images/AppLogo.png
+    - assets/images/berita1.jpg
+    - assets/images/berita2.jpg
 
   # Mengaktifkan ikon material
   uses-material-design: true
