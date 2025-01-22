@@ -20,7 +20,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'title': 'Selamat menikmati perjalanan yang nyaman dan terjamin',
     },
     {
-      'image': 'assets/images/On3.png',
+      'image': 'assets/images/Gambar3.png',
       'title': 'Let’s Get Started',
     },
   ];
@@ -61,6 +61,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     const SizedBox(height: 20),
                     Text(
                       title ?? 'Title not available',
+                      textAlign: TextAlign.center, // Rata tengah
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -76,7 +77,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: ElevatedButton(
                 onPressed: _goToHomeScreen,
-                child: const Text('Sign In'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.cyan, // Warna tulisan putih
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 15, horizontal: 40), // Ukuran tombol diperbesar
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8), // Sudut membulat
+                  ),
+                ),
+                child: const Text(
+                  'Sign In',
+                  style: TextStyle(fontSize: 18), // Perbesar tulisan
+                ),
               ),
             ),
           Padding(
