@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'PembayaranPerjalanan.dart';
 
-// Halaman Konfirmasi untuk Pete-pete
 class Confirmpete extends StatelessWidget {
   final String currentLocation;
   final String destination;
