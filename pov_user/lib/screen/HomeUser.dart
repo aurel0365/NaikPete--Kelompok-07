@@ -327,7 +327,7 @@ Widget _buildServiceGrid(BuildContext context) {
     physics: NeverScrollableScrollPhysics(),
     children: [
       _buildServiceCard(context, Icons.directions_bus, "Transportasi", Colors.blue, Pencarianpete()), // Arahkan ke Pencarian Pete-Pete
-      _buildServiceCard(context, Icons.location_on, "Halte", Colors.red, HalteScreen()), // Arahkan ke Halte
+      _buildServiceCard(context, Icons.location_on, "Halte", Colors.red, HalteListScreen()), // Arahkan ke Halte
     ],
   );
 }
