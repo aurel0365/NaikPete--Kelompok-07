@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'ConfirmTiket.dart';
+import 'PembayaranTiket.dart';
 
 class TicketScreen extends StatelessWidget {
   const TicketScreen({super.key});
@@ -11,12 +11,6 @@ class TicketScreen extends StatelessWidget {
         backgroundColor: Colors.white, // Warna putih untuk latar belakang AppBar
         foregroundColor: Colors.black, // Warna hitam untuk teks dan ikon
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         centerTitle: true,
       ),
       body: Container(

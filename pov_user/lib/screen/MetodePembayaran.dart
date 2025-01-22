@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:pov_user/screen/ConfirmTiket.dart';
+import 'PembayaranTiket.dart';
 
-class PaymentMethodScreen extends StatelessWidget {
-  const PaymentMethodScreen({super.key});
+class PaymentMethodScreen extends StatefulWidget {
+  const PaymentMethodScreen({Key? key}) : super(key: key);
+
+  @override
+  State<PaymentMethodScreen> createState() => _PaymentMethodScreenState();
+}
+
+class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
+  String? selectedPaymentMethod; // Untuk menyimpan metode pembayaran yang dipilih
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5FA),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80), // Menambahkan ukuran appBar yang lebih besar
+        preferredSize: const Size.fromHeight(80),
         child: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -20,7 +27,7 @@ class PaymentMethodScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Memperbaiki agar konten lebih rapi
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Metode Pembayaran',
@@ -31,16 +38,18 @@ class PaymentMethodScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
-            _buildPaymentOption(title: 'OVO'),
+            _buildPaymentOption(
+              title: 'QRIS Bank',
+              value: 'qris_bank',
+            ),
             const SizedBox(height: 10),
-            _buildPaymentOption(title: 'Kartu Debit'),
-            const SizedBox(height: 10),
-            _buildCreditCardOptions(),
-            const SizedBox(height: 10),
-            _buildAddNewCardButton(),
+            _buildPaymentOption(
+              title: 'OVO',
+              value: 'ovo',
+            ),
             const Spacer(),
             Padding(
-              padding: const EdgeInsets.only(bottom: 20.0), // Mengangkat tombol Bayar ke atas
+              padding: const EdgeInsets.only(bottom: 20.0),
               child: _buildCheckoutButton(context),
             ),
           ],
@@ -49,12 +58,11 @@ class PaymentMethodScreen extends StatelessWidget {
     );
   }
 
-  // Custom Back Button
   Widget _buildCustomBackButton(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: const Color(0xFFE0F7FA), // Soft blue background for the button
+        color: const Color(0xFFE0F7FA),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
@@ -73,173 +81,77 @@ class PaymentMethodScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentOption({required String title}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          const Icon(Icons.chevron_right, color: Colors.grey),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCreditCardOptions() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Kartu Kredit',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          const SizedBox(height: 10),
-          _buildCreditCardRow('Axis Bank', '**** 4536', Icons.credit_card),
-          const SizedBox(height: 10),
-          _buildCreditCardRow('HDFC Bank', '**** 5485', Icons.credit_card),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCreditCardRow(String bankName, String cardNumber, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF9F9FB),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: const Color(0xFF42C8DC)),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    bankName,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Text(
-                    cardNumber,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Radio(
-            value: false,
-            groupValue: true,
-            onChanged: (value) {},
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAddNewCardButton() {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Icon(Icons.add, color: Color(0xFF42C8DC)),
-          SizedBox(width: 10),
-          Text(
-            'Tambah Metode',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF42C8DC),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCheckoutButton(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => TicketConfirmationScreen()),
-        );
+  Widget _buildPaymentOption({required String title, required String value}) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedPaymentMethod = value;
+        });
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF42C8DC),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
+        decoration: BoxDecoration(
+          color: selectedPaymentMethod == value ? const Color(0xFFE0F7FA) : Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        padding: const EdgeInsets.symmetric(vertical: 16.0),
-        minimumSize: const Size(double.infinity, 50),
-      ),
-      child: const Text(
-        'Selnajutnya',
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            if (selectedPaymentMethod == value)
+              const Icon(Icons.check_circle, color: Color(0xFF42C8DC))
+          ],
         ),
       ),
     );
   }
+
+  // Update onPressed di _buildCheckoutButton
+Widget _buildCheckoutButton(BuildContext context) {
+  return ElevatedButton(
+    onPressed: selectedPaymentMethod != null
+        ? () {
+            // Kirim nilai selectedPaymentMethod ke TicketConfirmationScreen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TicketConfirmationScreen(
+                  selectedPaymentMethod: selectedPaymentMethod,
+                ),
+              ),
+            );
+          }
+        : null, // Tombol dinonaktifkan jika belum memilih metode pembayaran
+    style: ElevatedButton.styleFrom(
+      backgroundColor: const Color(0xFF42C8DC),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      minimumSize: const Size(double.infinity, 50),
+    ),
+    child: const Text(
+      'Selanjutnya',
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
+    ),
+  );
+}
 }

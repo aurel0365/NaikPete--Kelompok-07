@@ -78,7 +78,7 @@ class Pencarianpete extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Confirmpete()),
+                            MaterialPageRoute(builder: (context) => Confirmpete(currentLocation: '', destination: '', location: '', selectedRoute: '',)),
                           );
                         },
                         style: ElevatedButton.styleFrom(

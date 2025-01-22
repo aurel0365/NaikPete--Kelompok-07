@@ -1,12 +1,14 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import '../widget/BottomNavBar.dart';
+import 'ConfirmInfoPete.dart';
+import 'Halte.dart';
 import 'JadwalBerangkat.dart';
 import 'Notification.dart';
 import 'PencarianPete.dart';
 import 'ProfileUser.dart';
 import 'Tiket.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreens extends StatefulWidget {
   const HomeScreens({super.key, required String username});
@@ -61,6 +63,9 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
   late PageController _pageController;
   int _currentPage = 0;
 
+  TextEditingController _locationController = TextEditingController();
+  TextEditingController _destinationController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -88,6 +93,8 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
   @override
   void dispose() {
     _pageController.dispose();
+    _locationController.dispose();
+    _destinationController.dispose();
     super.dispose();
   }
 
@@ -128,19 +135,19 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
   }
 
   Widget _buildBackgroundCarousel() {
-    return SizedBox(
-      height: 300,
-      child: PageView.builder(
-        controller: _pageController,
-        itemCount: imageUrls.length,
-        itemBuilder: (context, index) {
-          return Image.asset(
-            imageUrls[index],
-            fit: BoxFit.cover,
-            width: double.infinity,
-          );
-        },
+    return CarouselSlider(
+      options: CarouselOptions(
+        height: 300,
+        autoPlay: true,
+        viewportFraction: 1.0,
       ),
+      items: imageUrls.map((url) {
+        return Image.asset(
+          url,
+          fit: BoxFit.cover,
+          width: double.infinity,
+        );
+      }).toList(),
     );
   }
 
@@ -246,14 +253,40 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 16),
-          _buildLocationInput(Icons.location_on, "Lokasi anda saat ini", Colors.cyan),
+          _buildLocationInput(Icons.location_on, "Lokasi anda saat ini", Colors.cyan, _locationController),
           const SizedBox(height: 16),
-          _buildLocationInput(Icons.location_on, "Tujuan anda saat ini", Colors.red),
+          _buildLocationInput(Icons.location_on, "Tujuan anda saat ini", Colors.red, _destinationController),
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity, // Membuat tombol selebar container
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                String location = _locationController.text; // Ambil data dari controller untuk lokasi
+                String destination = _destinationController.text; // Ambil data dari controller untuk tujuan
+
+                if (location.isEmpty || destination.isEmpty) {
+                  // Jika salah satu atau kedua input kosong
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Tujuan anda atau lokasi anda kosong!'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                } else {
+                  // Jika keduanya ada inputnya, lanjutkan ke halaman selanjutnya
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Confirmpete(
+                        currentLocation: location, // Mengirimkan data yang benar
+                        destination: destination,  // Mengirimkan data yang benar
+                        location: '', 
+                        selectedRoute: '', // Jika perlu mengirimkan data tambahan, pastikan untuk mendefinisikannya
+                      ),
+                    ),
+                  );
+                }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF42C8DC),
                 shape: RoundedRectangleBorder(
@@ -268,8 +301,9 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
     );
   }
 
-  Widget _buildLocationInput(IconData icon, String hintText, Color color) {
+  Widget _buildLocationInput(IconData icon, String hintText, Color color, TextEditingController controller) {
     return TextField(
+      controller: controller,
       decoration: InputDecoration(
         prefixIcon: Icon(
           icon,
@@ -284,72 +318,69 @@ class _HomeScreenBodyState extends State<HomeScreenBody> {
     );
   }
 
-  Widget _buildServiceGrid(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 3,
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: [
-        _buildFeatureCard(Icons.directions_bus, "Pete-pete", context, Pencarianpete()),
-        _buildFeatureCard(Icons.location_on, "Halte", context, TicketScreen()),
-      ],
-    );
-  }
+Widget _buildServiceGrid(BuildContext context) {
+  return GridView.count(
+    crossAxisCount: 3,
+    crossAxisSpacing: 16,
+    mainAxisSpacing: 16,
+    shrinkWrap: true,
+    physics: NeverScrollableScrollPhysics(),
+    children: [
+      _buildServiceCard(context, Icons.directions_bus, "Transportasi", Colors.blue, Pencarianpete()), // Arahkan ke Pencarian Pete-Pete
+      _buildServiceCard(context, Icons.location_on, "Halte", Colors.red, HalteScreen()), // Arahkan ke Halte
+    ],
+  );
+}
 
-  Widget _buildFeatureCard(IconData icon, String label, BuildContext context, Widget page) {
-    return InkWell(
+Widget _buildServiceCard(BuildContext context, IconData icon, String title, Color color, Widget targetScreen) {
+  return Card(
+    elevation: 4,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    child: InkWell(
       onTap: () {
+        // Arahkan ke layar yang sesuai saat ditekan
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => page),
+          MaterialPageRoute(builder: (context) => targetScreen),
         );
       },
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 2,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 40, color: color),
+          const SizedBox(height: 10),
+          Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+        ],
+      ),
+    ),
+  );
+}
+
+  Widget _buildInfoSection() {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.blue[50],
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 30, color: const Color(0xFF42C8DC)),
-            const SizedBox(height: 8),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
             Text(
-              label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+              "Informasi Penting",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              "Cek jadwal keberangkatan pete-pete dan layanan lainnya langsung melalui aplikasi kami. Selalu update untuk fitur terbaru!",
+              style: TextStyle(fontSize: 14, color: Colors.black54),
             ),
           ],
         ),
-      ),
-    );
+      );
+    }
   }
-
-  Widget _buildInfoSection() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.blue[50],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Text(
-            "Informasi Penting",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            "Cek jadwal keberangkatan pete-pete dan layanan lainnya langsung melalui aplikasi kami. Selalu update untuk fitur terbaru!",
-            style: TextStyle(fontSize: 14, color: Colors.black54),
-          ),
-        ],
-      ),
-    );
-  }
-}

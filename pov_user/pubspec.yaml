@@ -39,6 +39,7 @@ dependencies:
   get: ^4.6.6
   flutter_screenutil: ^5.9.3
   url_launcher: ^6.3.1
+  carousel_slider: ^5.0.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,10 @@ flutter:
     - assets/images/AppLogo.png
     - assets/images/berita1.jpg
     - assets/images/berita2.jpg
+    - assets/images/Gambar2.png
+    - assets/images/Gambar1.png
+
+
 
   # Mengaktifkan ikon material
   uses-material-design: true

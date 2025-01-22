@@ -1,129 +1,220 @@
 import 'package:flutter/material.dart';
 
-class FAQPage extends StatefulWidget {
+class FAQPage extends StatelessWidget {
+  const FAQPage({super.key});
+
   @override
-  _FAQPageState createState() => _FAQPageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: '',
+      theme: ThemeData(
+        primaryColor: Color(0xFF42C8DC),
+      ),
+      home: const HelpCenterScreen(),
+    );
+  }
 }
 
-class _FAQPageState extends State<FAQPage> {
-  String _searchQuery = '';
-
-  final List<Map<String, dynamic>> faqCategories = [
-    {
-      'category': 'Tentang Aplikasi Naik Pete\'',
-      'faqs': [
-        {
-          'question': 'Apa itu aplikasi Naik Pete\'?',
-          'answer': 'Naik Pete\' adalah aplikasi yang mempermudah pemesanan pete-pete dan melihat rute terdekat.'
-        },
-        {
-          'question': 'Bagaimana cara memesan pete-pete?',
-          'answer': 'Anda dapat memilih lokasi penjemputan dan tujuan, kemudian melakukan pemesanan melalui aplikasi.'
-        },
-        {
-          'question': 'Apakah aplikasi ini berbayar?',
-          'answer': 'Aplikasi ini gratis untuk diunduh dan digunakan. Biaya perjalanan akan ditampilkan sebelum konfirmasi pemesanan.'
-        },
-      ]
-    },
-    {
-      'category': 'Fitur Aplikasi',
-      'faqs': [
-        {
-          'question': 'Bagaimana cara melihat rute terdekat?',
-          'answer': 'Gunakan fitur pencarian rute pada menu utama untuk melihat rute terdekat dari lokasi Anda.'
-        },
-        {
-          'question': 'Apakah saya bisa melihat kapasitas kursi?',
-          'answer': 'Ya, Anda dapat melihat kapasitas kursi yang tersedia di setiap pete-pete sebelum memesan.'
-        },
-        {
-          'question': 'Bagaimana cara melaporkan masalah?',
-          'answer': 'Anda dapat melaporkan masalah melalui menu Bantuan, lalu pilih kategori keluhan yang sesuai.'
-        },
-      ]
-    }
-  ];
+class HelpCenterScreen extends StatelessWidget {
+  const HelpCenterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
+        backgroundColor: Color(0xFF42C8DC),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF42C8DC)),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Header dengan background biru
           Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
             color: Color(0xFF42C8DC),
-            child: Text(
-              'How can we help you?',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              onChanged: (query) {
-                setState(() {
-                  _searchQuery = query;
-                });
-              },
-              decoration: InputDecoration(
-                hintText: 'Search for help topics',
-                prefixIcon: Icon(Icons.search, color: Colors.black54),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[200],
-              ),
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: faqCategories.length,
-              itemBuilder: (context, index) {
-                final category = faqCategories[index];
-                return ExpansionTile(
-                  title: Text(
-                    category['category'],
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF42C8DC),
-                    ),
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Bagaimana kami dapat membantu?',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                  children: (category['faqs'] as List).map((faq) {
-                    return ListTile(
-                      title: Text(
-                        faq['question'],
-                        style: TextStyle(color: Colors.black87),
-                      ),
-                      onTap: () {
-                        // Navigate to detail page
-                      },
-                    );
-                  }).toList(),
-                );
-              },
+                ),
+                const SizedBox(height: 20.0),
+                // TextField untuk pencarian
+                TextField(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: 'Cari artikel bantuan',
+                    hintStyle: TextStyle(color: Colors.grey.shade600),
+                    prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: EdgeInsets.symmetric(vertical: 16.0),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          // Bagian isi dengan ListView
+          Expanded(
+            child: ListView(
+              children: [
+                _buildSectionHeader('Pembayaran'),
+                _buildHelpItem(context, 'Metode pembayaran apa saja yang diterima?'),
+                _buildHelpItem(context, 'Bagaimana cara membayar dengan QRIS?'),
+                _buildHelpItem(context, 'Bagaimana cara membayar dengan OVO?'),
+                const Divider(height: 20.0, color: Colors.grey), // Garis pembatas
+                const SizedBox(height: 10.0),
+                _buildSectionHeader('Keamanan dan Kenyamanan'),
+                _buildHelpItem(context, 'Apa saja tips aman saat menggunakan Naik Pete?'),
+                _buildHelpItem(context, 'Bagaimana cara melaporkan masalah di aplikasi?'),
+              ],
             ),
           ),
         ],
       ),
+      backgroundColor: Colors.white, // Latar belakang bagian isi menjadi putih
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHelpItem(BuildContext context, String title) {
+    return Column(
+      children: [
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 16, color: Colors.black87),
+          ),
+          trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HelpDetailScreen(title: title),
+              ),
+            );
+          },
+        ),
+        const Divider(height: 1.0, color: Colors.grey), // Garis pembatas setiap item
+      ],
+    );
+  }
+}
+class HelpDetailScreen extends StatelessWidget {
+  final String title;
+
+  const HelpDetailScreen({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Color(0xFF42C8DC),
+        title: const Text(
+          'Artikel Bantuan',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        centerTitle: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            const Text(
+              "Silakan baca artikel ini untuk mendapatkan informasi lebih lanjut tentang topik yang Anda pilih.",
+              style: TextStyle(fontSize: 16, color: Colors.black87, height: 1.5),
+            ),
+            const SizedBox(height: 16.0),
+            const Divider(height: 32.0),
+            const Text(
+              'Artikel terkait',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 8.0),
+            _buildRelatedArticle(context, 'Bagaimana cara mengubah metode pembayaran?'),
+          ],
+        ),
+      ),
+      backgroundColor: Colors.white, // Background diubah menjadi putih
+    );
+  }
+
+  Widget _buildRelatedArticle(BuildContext context, String title) {
+    return Column(
+      children: [
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
+          title: Text(
+            title,
+            style: const TextStyle(fontSize: 16, color: Color(0xFF42C8DC)),
+          ),
+          trailing: const Icon(Icons.chevron_right, color: Colors.grey),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HelpDetailScreen(title: title),
+              ),
+            );
+          },
+        ),
+        const Divider(height: 1.0, color: Colors.grey), // Garis pembatas artikel terkait
+      ],
     );
   }
 }

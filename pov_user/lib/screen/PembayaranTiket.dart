@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pov_user/screen/SuccessNotification.dart';
-
 import 'MetodePembayaran.dart';
 
 class TicketConfirmationScreen extends StatefulWidget {
-  const TicketConfirmationScreen({Key? key}) : super(key: key);
+  final String? selectedPaymentMethod; // Terima parameter dari PaymentMethodScreen
+
+  const TicketConfirmationScreen({Key? key, this.selectedPaymentMethod}) : super(key: key);
 
   @override
   _TicketConfirmationScreenState createState() =>
@@ -38,7 +39,7 @@ class _TicketConfirmationScreenState extends State<TicketConfirmationScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             const Text(
               'Konfirmasi Pembelian \nTiket',
               style: TextStyle(
@@ -47,93 +48,8 @@ class _TicketConfirmationScreenState extends State<TicketConfirmationScreen> {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            const SizedBox(height: 24),
-            const Text(
-              'Tiket',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.black54,
-              ),
-            ),
             const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: Colors.yellow,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.location_on,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  const Expanded(
-                    child: Text(
-                      'One Day Tiket',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.remove, color: Color(0xFF42C8DC)),
-                          onPressed: () {
-                            setState(() {
-                              if (ticketQuantity > 0) {
-                                ticketQuantity--;
-                              }
-                            });
-                          },
-                        ),
-                        Text(
-                          '$ticketQuantity',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.add, color: Color(0xFF42C8DC)),
-                          onPressed: () {
-                            setState(() {
-                              ticketQuantity++;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
+            // Bagian Metode Pembayaran
             const Text(
               'Metode Pembayaran',
               style: TextStyle(
@@ -160,22 +76,24 @@ class _TicketConfirmationScreenState extends State<TicketConfirmationScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(width: 16),
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      '2121 6352 8465 ****',
-                      style: TextStyle(
+                      widget.selectedPaymentMethod ?? 'Belum memilih metode pembayaran',
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
                   TextButton(
-                     onPressed: () {
-                       Navigator.push(
-                          context,
-                            MaterialPageRoute(builder: (context) => PaymentMethodScreen()),
-                    );
-                  },
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PaymentMethodScreen(),
+                        ),
+                      );
+                    },
                     child: const Text(
                       'Edit',
                       style: TextStyle(
@@ -184,6 +102,61 @@ class _TicketConfirmationScreenState extends State<TicketConfirmationScreen> {
                         color: Color(0xFF42C8DC),
                       ),
                     ),
+                  ),
+                ],
+              ),
+            ),
+            // Bagian Pengaturan Jumlah Tiket
+            const SizedBox(height: 24),
+            const Text(
+              'Jumlah Tiket',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black54,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.remove, color: Colors.black),
+                    onPressed: () {
+                      setState(() {
+                        if (ticketQuantity > 0) {
+                          ticketQuantity--;
+                        }
+                      });
+                    },
+                  ),
+                  Text(
+                    '$ticketQuantity',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add, color: Colors.black),
+                    onPressed: () {
+                      setState(() {
+                        ticketQuantity++;
+                      });
+                    },
                   ),
                 ],
               ),
@@ -213,10 +186,28 @@ class _TicketConfirmationScreenState extends State<TicketConfirmationScreen> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SuccessNotif()),
-                );
+                if (ticketQuantity == 0) {
+                  // Tampilkan notifikasi jika jumlah tiket 0
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Anda belum memasukkan total tiket'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                } else if (widget.selectedPaymentMethod == null) {
+                  // Tampilkan notifikasi jika metode pembayaran belum dipilih
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Anda belum memilih metode pembayaran'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SuccessNotif()),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
