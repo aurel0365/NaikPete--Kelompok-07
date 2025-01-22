@@ -15,7 +15,6 @@ class HalteScreen extends StatefulWidget {
 }
 
 class _HalteScreenState extends State<HalteScreen> {
-  final TextEditingController _searchController = TextEditingController();
   List<String> halteList = [
     'Halte A',
     'Halte B',
@@ -24,97 +23,78 @@ class _HalteScreenState extends State<HalteScreen> {
     'Halte E',
   ];
 
-  List<String> filteredHalteList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    filteredHalteList = halteList;
-  }
-
-  void _searchHalte(String query) {
-    final results = halteList.where((halte) {
-      return halte.toLowerCase().contains(query.toLowerCase());
-    }).toList();
-
-    setState(() {
-      filteredHalteList = results;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Cari Halte Terdekat'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: CustomSearchDelegate(_searchHalte),
-              );
-            },
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Custom Back Button
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.grey.shade200,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const Text(
+                    'Cari Halte Terdekat',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+
+              // List Halte
+              Expanded(
+                child: ListView.builder(
+                  itemCount: halteList.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ListTile(
+                        title: Text(
+                          halteList[index],
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        trailing: const Icon(Icons.directions_bus),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
-      body: ListView.builder(
-        itemCount: filteredHalteList.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(filteredHalteList[index]),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class CustomSearchDelegate extends SearchDelegate {
-  final Function(String) searchCallback;
-
-  CustomSearchDelegate(this.searchCallback);
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [
-      IconButton(
-        icon: Icon(Icons.clear),
-        onPressed: () {
-          query = '';
-          searchCallback(query);
-        },
-      ),
-    ];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
-      },
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    searchCallback(query);
-    return Container();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    searchCallback(query);
-    return ListView.builder(
-      itemCount: query.isEmpty ? 0 : 5, // Mock suggestion count
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text('Suggested ${index + 1}'),
-        );
-      },
     );
   }
 }

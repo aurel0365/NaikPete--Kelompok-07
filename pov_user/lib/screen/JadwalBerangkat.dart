@@ -6,16 +6,16 @@ class Jadwalberangkat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,  // Set the background color of the entire screen to white
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80), // Tinggi total AppBar dengan padding
+        preferredSize: const Size.fromHeight(80),
         child: AppBar(
           backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           elevation: 1,
           centerTitle: true,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 16), // Tambahkan jarak di atas teks
-            child: const Text(
+          title: const Padding(
+            padding: EdgeInsets.only(top: 16),
+            child: Text(
               'Jadwal Berangkat',
               style: TextStyle(
                 fontSize: 25,
@@ -64,14 +64,14 @@ class _JadwalSemuaState extends State<JadwalSemua> {
   ];
 
   List<Map<String, String>> _filteredJadwal = [];
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _filteredJadwal = _jadwal;
 
-    // Update the search results when the text changes
+    // Listen to changes in the search field
     _searchController.addListener(() {
       _filterJadwal();
     });
@@ -81,8 +81,9 @@ class _JadwalSemuaState extends State<JadwalSemua> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       _filteredJadwal = _jadwal.where((jadwal) {
-        return jadwal['name']!.toLowerCase().contains(query) ||
-            jadwal['rute']!.toLowerCase().contains(query);
+        final nameMatch = jadwal['name']!.toLowerCase().contains(query);
+        final ruteMatch = jadwal['rute']!.toLowerCase().contains(query);
+        return nameMatch || ruteMatch;
       }).toList();
     });
   }
@@ -98,15 +99,18 @@ class _JadwalSemuaState extends State<JadwalSemua> {
             decoration: InputDecoration(
               prefixIcon: const Icon(Icons.search),
               hintText: 'Cari jadwal...',
+              filled: true,
+              fillColor: const Color.fromARGB(255, 240, 240, 240),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none,
               ),
             ),
           ),
         ),
         Expanded(
           child: _filteredJadwal.isEmpty
-              ? Center(
+              ? const Center(
                   child: Text(
                     'Hasil pencarian anda tidak ada',
                     style: TextStyle(fontSize: 16, color: Colors.grey),
@@ -119,7 +123,7 @@ class _JadwalSemuaState extends State<JadwalSemua> {
                     return Card(
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      color: Colors.white,  // Set the card background to white
+                      color: Colors.white,
                       child: ListTile(
                         contentPadding: const EdgeInsets.all(12),
                         leading: CircleAvatar(
@@ -139,7 +143,7 @@ class _JadwalSemuaState extends State<JadwalSemua> {
                             const SizedBox(height: 4),
                             Text(jadwal['rute']!, style: const TextStyle(color: Colors.grey)),
                             const SizedBox(height: 4),
-                            Text('${jadwal['date']}  \u2022  ${jadwal['time']}',
+                            Text('${jadwal['date']}  •  ${jadwal['time']}',
                                 style: const TextStyle(color: Colors.grey)),
                           ],
                         ),
